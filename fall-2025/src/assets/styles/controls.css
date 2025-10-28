@@ -1,0 +1,333 @@
+/* ===================================
+   Controls - Compact & Non-Intrusive
+   =================================== */
+
+.controls {
+    position: fixed;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    align-items: center;
+    justify-content: center;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: var(--spacing-md);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+/* Toggle Button */
+.toggle-btn {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    position: relative;
+    min-width: 44px;
+}
+
+.toggle-btn::after {
+    content: ' ▲';
+    display: inline;
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+.controls.expanded .toggle-btn::after {
+    content: ' ▼';
+}
+
+/* Buttons */
+.control-btn {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    border: none;
+    color: var(--color-text);
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    min-height: 44px;
+    white-space: nowrap;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+/* Icon Buttons */
+.icon-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.icon-btn {
+    min-width: 44px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn .icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Control Groups */
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 8px 12px;
+    /* background: rgba(255, 255, 255, 0.05); */
+    background: #171717;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    min-height: 44px;
+}
+
+.control-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+/* Select */
+.rhythm-control select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    color: var(--color-text);
+    padding: 8px 32px 8px 12px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    min-width: 140px;
+}
+
+.rhythm-control select:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.rhythm-control select option {
+    background: var(--color-bg);
+}
+
+/* Sliders */
+.slider-control {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.slider-control input[type="range"] {
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.slider-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.slider-control input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.slider-value {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* Mobile - Controls as overlay at bottom */
+@media (max-width: 768px) {
+    .controls {
+        position: fixed;
+        bottom: var(--spacing-md);
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        max-width: calc(100vw - 24px);
+        padding: var(--spacing-sm);
+    }
+    
+    .controls .icon-buttons,
+    .controls .control-group {
+        display: none;
+    }
+    
+    /* When manually expanded */
+    .controls.expanded .icon-buttons,
+    .controls.expanded .control-group {
+        display: flex;
+    }
+    
+    .controls.expanded {
+        flex-direction: column;
+        align-items: stretch;
+        overflow-y: auto;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    /* Icon buttons stay horizontal on mobile */
+    .controls.expanded .icon-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .controls.expanded .icon-btn {
+        /* flex: 0 0 auto; */
+        flex: 1;
+    }
+    
+    .controls.expanded .control-group {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .controls.expanded .slider-control {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .controls.expanded .slider-control input[type="range"] {
+        flex: 1;
+    }
+}
+
+/* Small height (landscape mobile/tablet) - Compact overlay at bottom */
+@media (max-height: 600px) {
+    .controls {
+        position: fixed;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px var(--spacing-sm);
+        font-size: 12px;
+    }
+    
+    .controls .icon-buttons,
+    .controls .control-group {
+        display: none;
+    }
+    
+    /* When expanded */
+    .controls.expanded {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 6px 10px;
+        gap: 6px;
+        font-size: 12px;
+    }
+    
+    .controls.expanded .icon-buttons,
+    .controls.expanded .control-group {
+        display: flex;
+    }
+    
+    .controls.expanded .control-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 36px;
+    }
+    
+    .controls.expanded .control-group {
+        padding: 6px 8px;
+        min-height: 36px;
+    }
+    
+    .controls.expanded .control-group label {
+        font-size: 11px;
+    }
+    
+    .controls.expanded .rhythm-control select {
+        font-size: 11px;
+        padding: 6px 24px 6px 8px;
+        min-width: 100px;
+    }
+    
+    .controls.expanded .slider-control input[type="range"] {
+        width: 60px;
+    }
+    
+    .controls.expanded .slider-value {
+        font-size: 11px;
+        min-width: 50px;
+    }
+}
+
+/* Desktop - Always expanded, hide toggle button */
+@media (min-width: 769px) and (min-height: 601px) {
+    .controls {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: none;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+    }
+    
+    /* Hide toggle button on desktop */
+    .toggle-btn {
+        display: none !important;
+    }
+    
+    /* Always show all controls on desktop */
+    .controls .icon-buttons,
+    .controls .control-group {
+        display: flex;
+    }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .controls {
+        max-width: 90vw;
+    }
+}
+

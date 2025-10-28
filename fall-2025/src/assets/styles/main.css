@@ -1,0 +1,104 @@
+/* ===================================
+   Color Palette - Easily Customizable
+   =================================== */
+:root {
+    /* Primary Colors */
+    --color-primary: #e74c3c;
+    --color-primary-dark: #c0392b;
+    --color-accent: #3498db;
+    
+    /* Backgrounds */
+    --color-bg: #171717;
+    --color-bg-gradient: #171717;
+    
+    /* Glass effect */
+    --glass-bg: rgba(23, 23, 23, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    
+    /* Text */
+    --color-text: #ffffff;
+    --color-text-muted: #b8c5d6;
+    
+    /* Spacing */
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    
+    /* Borders */
+    --radius: 10px;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-gradient) 100%);
+    color: var(--color-text);
+}
+
+#app-layout {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#container {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Mobile - controls as overlay */
+@media (max-width: 768px), (max-height: 600px) {
+    #app-layout {
+        display: block;
+    }
+    
+    #container {
+        width: 100%;
+        height: 100vh;
+    }
+}
+
+/* Loading */
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 300;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 24px 32px;
+    border-radius: var(--radius);
+    text-align: center;
+    color: var(--color-text);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--glass-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 12px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+

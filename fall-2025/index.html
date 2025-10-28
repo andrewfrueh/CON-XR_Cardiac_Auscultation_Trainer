@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Heart Visualization</title>
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/controls.css">
+</head>
+<body>
+    <div id="app-layout">
+        <div id="container">
+            <div id="loading">
+                <div class="loading-spinner"></div>
+                Loading Realistic Heart Model...
+            </div>
+        </div>
+        
+        <div class="controls" id="heartControls">
+            <button class="control-btn toggle-btn" onclick="toggleControls()" aria-label="Toggle controls">Controls</button>
+            
+            <div class="icon-buttons">
+                <button class="control-btn icon-btn" onclick="resetCamera()" aria-label="Reset view" title="Reset View">
+                    <span class="icon">↻</span>
+                </button>
+                <button class="control-btn icon-btn" id="playPauseBtn" onclick="toggleAnimation()" aria-label="Play/Pause" title="Pause">
+                    <span class="icon">⏸</span>
+                </button>
+            </div>
+            
+            <div class="control-group rhythm-control">
+                <label for="rhythmSelect">Rhythm:</label>
+                <select id="rhythmSelect" onchange="switchHeartRhythm(this.value)">
+                    <option value="Normal S1 S2">Normal S1 S2</option>
+                    <option value="S3 Gallop">S3 Gallop</option>
+                    <option value="S4 Gallop">S4 Gallop</option>
+                    <option value="Mid-Systolic Click">Mid-Systolic Click</option>
+                    <option value="Split S1">Split S1</option>
+                    <option value="Early Systolic Murmur">Early Systolic Murmur</option>
+                    <option value="Mid-Systolic Murmur">Mid-Systolic Murmur</option>
+                    <option value="Late Systolic Murmur">Late Systolic Murmur</option>
+                    <option value="Holosystolic Murmur">Holosystolic Murmur</option>
+                    <option value="Click w/ Late Systolic Murmur">Click w/ Late Systolic Murmur</option>
+                </select>
+            </div>
+            
+            <div class="control-group slider-control">
+                <label for="bpmSlider">BPM:</label>
+                <input type="range" id="bpmSlider" min="30" max="180" step="5" value="60" 
+                       oninput="setHeartBPM(parseInt(this.value)); document.getElementById('bpmValue').textContent = this.value;">
+                <span id="bpmValue" class="slider-value">60</span>
+            </div>
+            
+            <div class="control-group slider-control">
+                <label for="volumeSlider">Volume:</label>
+                <input type="range" id="volumeSlider" min="0" max="100" step="5" value="70" 
+                       oninput="setHeartSoundVolume(this.value/100); document.getElementById('volumeValue').textContent = this.value + '%';">
+                <span id="volumeValue" class="slider-value">70%</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/",
+            "three/examples/jsm/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <!-- Main application (includes controls manager) -->
+    <script type="module" src="App.js"></script>
+</body>
+</html>

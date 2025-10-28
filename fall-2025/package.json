@@ -1,0 +1,29 @@
+{
+  "name": "heart-visualization-ts",
+  "version": "1.0.0",
+  "description": "A beautiful, interactive 3D heart model built with Three.js and TypeScript",
+  "main": "docs/heart.js",
+  "scripts": {
+    "dev": "yarn build && concurrently \"yarn nodemon\" \"yarn serve\"",
+    "build": "tsc && yarn copy-assets",
+    "build:watch": "tsc --watch",
+    "copy-assets": "cp -r src/assets docs/ 2>/dev/null || true && cp index.html docs/",
+    "serve": "http-server docs -p 3000 -c-1 --cors",
+    "clean": "rm -rf docs",
+    "start": "yarn build && yarn serve",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": ["threejs", "3d", "heart", "visualization", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/three": "^0.158.3",
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "three": "^0.158.0"
+  }
+}
