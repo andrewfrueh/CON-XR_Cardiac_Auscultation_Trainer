@@ -1,3 +1,5 @@
+*/node_modules/
+*/docs
  
 # Blender >> 
 # Backup file, auto-generated
@@ -49,4 +51,3 @@ sysinfo.txt
 *.apk
 *.unitypackage
 # << END Unity
-
