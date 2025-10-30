@@ -21,6 +21,11 @@
         <div class="controls" id="heartControls">
             <button class="control-btn toggle-btn" onclick="toggleControls()" aria-label="Toggle controls">Controls</button>
             
+            <!-- Play button that shows when controls are collapsed (mobile only) -->
+            <button class="control-btn icon-btn play-btn-collapsed" id="playPauseBtnCollapsed" onclick="toggleAnimation()" aria-label="Play/Pause" title="Pause">
+                <span class="icon">⏸</span>
+            </button>
+            
             <div class="icon-buttons">
                 <button class="control-btn icon-btn" onclick="resetCamera()" aria-label="Reset view" title="Reset View">
                     <span class="icon">↻</span>

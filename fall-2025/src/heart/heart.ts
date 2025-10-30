@@ -311,14 +311,23 @@ function resetCamera(): void {
 // Toggle heart animation
 function toggleAnimation(): void {
     isAnimating = !isAnimating;
-    const btn = document.getElementById('playPauseBtn') as HTMLButtonElement;
-    if (btn) {
-        const icon = btn.querySelector('.icon');
-        if (icon) {
-            icon.textContent = isAnimating ? '⏸' : '▶';
+    
+    // Update both play buttons (expanded and collapsed versions)
+    const btnExpanded = document.getElementById('playPauseBtn') as HTMLButtonElement;
+    const btnCollapsed = document.getElementById('playPauseBtnCollapsed') as HTMLButtonElement;
+    
+    const newIcon = isAnimating ? '⏸' : '▶';
+    const newTitle = isAnimating ? 'Pause' : 'Play';
+    
+    [btnExpanded, btnCollapsed].forEach(btn => {
+        if (btn) {
+            const icon = btn.querySelector('.icon');
+            if (icon) {
+                icon.textContent = newIcon;
+            }
+            btn.setAttribute('title', newTitle);
         }
-        btn.setAttribute('title', isAnimating ? 'Pause' : 'Play');
-    }
+    });
     
     // Control heart controller
     if (isAnimating) {
