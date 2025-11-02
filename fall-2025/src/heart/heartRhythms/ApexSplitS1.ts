@@ -3,7 +3,7 @@ import { Rhythm } from "./Rhythm.js";
 
 // Apex, Supine, Bell - Split S1 - Normal
 export const splitS1Rhythm: Rhythm = {
-    name: "Split S1",
+    name: "Apex Split S1",
     sound: [
         // Split S1 sound
         {

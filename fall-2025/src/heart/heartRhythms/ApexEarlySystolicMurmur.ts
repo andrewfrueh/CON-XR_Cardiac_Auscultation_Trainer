@@ -1,19 +1,19 @@
 import { MotionCurves } from "../../utils/curves.js";
 import { Rhythm } from "./Rhythm.js";
 
-// Apex, Supine, Bell - Mid-Systolic Murmur - Mitral Regurg due to CAD
-export const midSystolicMurmurRhythm: Rhythm = {
-    name: "Mid-Systolic Murmur",
+// Apex, Supine, Bell - Early Systolic Murmur - Acute Mitral Regurg
+export const earlySystolicMurmurRhythm: Rhythm = {
+    name: "Apex Early Systolic Murmur",
     sound: [
         // S1 sound
         {
             time: 0.32,
             soundPath: "assets/sounds/heart-normal-S1.wav",
         },
-        // Mid-Systolic Murmur sound
+        // Early Systolic Murmur sound
         {
-            time: 0.40,
-            soundPath: "assets/sounds/mid-Systolic-Murmur.wav",
+            time: 0.34,
+            soundPath: "assets/sounds/early-Systolic-Murmur.wav",
         },
         // S2 sound
         {
