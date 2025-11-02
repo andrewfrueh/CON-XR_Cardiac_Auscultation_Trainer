@@ -335,8 +335,9 @@
         border-bottom: none;
     }
     
-    /* Hide toggle button on desktop */
-    .toggle-btn {
+    /* Hide toggle button and collapsed play button on desktop */
+    .toggle-btn,
+    .play-btn-collapsed {
         display: none !important;
     }
     
