@@ -3,7 +3,7 @@ import { Rhythm } from "./Rhythm.js";
 
 // Apex, Supine, Bell - Normal S1 S2 - Normal
 export const normalS1S2Rhythm: Rhythm = {
-  name: "Normal S1 S2",
+    name: "Apex Normal S1 S2",
   animation: [
     // Atria contract
     {

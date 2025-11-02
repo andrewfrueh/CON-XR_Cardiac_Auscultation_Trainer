@@ -1,9 +1,9 @@
 import { MotionCurves } from "../../utils/curves.js";
 import { Rhythm } from "./Rhythm.js";
 
-// Apex, Left Ducubitus, Bell - S4 Gallop - Left Ventricular Hypertrophy
-export const s4GallopRhythm: Rhythm = {
-	name: "S4 Gallop",
+// Apex, Left Ducubitus, Bell - S4 & Mid-Sys Murmur - Ischemic Cardiomyopathy w/ Mitral Regurg
+export const s4MidSysRhythm: Rhythm = {
+    name: "Apex S4 & Mid-Sys Murmur",
     sound: [
         // S4 sound
         {
@@ -14,6 +14,11 @@ export const s4GallopRhythm: Rhythm = {
         {
             time: 0.32,
             soundPath: "assets/sounds/heart-normal-S1.wav",
+        },
+        // Mid-Systolic Murmur sound
+        {
+            time: 0.40,
+            soundPath: "assets/sounds/mid-Systolic-Murmur.wav",
         },
         // S2 sound
         {
