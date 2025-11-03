@@ -65,11 +65,8 @@ export function init(): void {
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.enablePan = false; // Disable panning
-        controls.enableZoom = false; // Disable zoom controls
-        controls.maxPolarAngle = 1.8;
-        controls.minPolarAngle = 0.8;
-        controls.maxAzimuthAngle = 1;
-        controls.minAzimuthAngle = -.5;
+        controls.enableZoom = true; // Disable zoom controls
+        
     } catch (error) {
         console.error('Error creating OrbitControls:', error);
     }
