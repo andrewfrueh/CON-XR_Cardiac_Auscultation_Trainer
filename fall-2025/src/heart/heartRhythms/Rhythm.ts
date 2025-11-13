@@ -1,21 +1,21 @@
 import { CurveFunction } from "../../utils/curves.js";
-import { normalS1S2Rhythm } from "./ApexNormalS1S2.js";
-import { s4GallopRhythm } from "./ApexS4Gallop.js";
-import { s3GallopRhythm } from "./ApexS3Gallop.js";
-import { midSystolicClickRhythm } from "./ApexMid-SystolicClick.js";
-import { midSystolicMurmurRhythm } from "./ApexMid-SystolicMurmur.js"
-import { splitS1Rhythm } from "./ApexSplitS1.js"
-import { earlySystolicMurmurRhythm } from "./ApexEarlySystolicMurmur.js";
-import { lateSystolicMurmurRhythm } from "./ApexLateSystolicMurmur.js";
-import { holosystolicMurmurRhythm } from "./ApexHolosystolicMurmur.js";
-import { clickLateSystolicMurmurRhythm } from "./ApexClick-Late-SystolicMurmur.js";
-import { s4MidSysRhythm } from "./ApexS4&Mid-SysMurmur.js"
-import { s3HolosysMurmurRhythm } from "./ApexS3&HolosysMurmur.js"
-import { mitralOpeningSnapAndDiastolicMurmurRhythm } from "./ApexMitralOpeningSnap&DiastolicMurmur.js"
-import { aorticNormalS1S2Rhythm } from "./AorticNormalS1S2.js"
-import { aorticSystolicMurmurAbsentS2Rhythm } from "./AorticSystolicMurmurAbsentS2.js";
-import { aorticEarlyDiastolicMurmurRhythm } from "./AorticEarlyDiastolicMurmur.js";
-import { aorticSystolicDiastolicMurmurRhythm } from "./AorticSystolic&DiastolicMurmur.js"
+import { mitralNormalS1S2Rhythm } from "./Mitral/NormalS1S2.js";
+import { mitralS4GallopRhythm } from "./Mitral/S4Gallop.js";
+import { mitralS3GallopRhythm } from "./Mitral/S3Gallop.js";
+import { mitralMidSystolicClickRhythm } from "./Mitral/Mid-SystolicClick.js";
+import { mitralMidSystolicMurmurRhythm } from "./Mitral/Mid-SystolicMurmur.js"
+import { mitralSplitS1Rhythm } from "./Mitral/SplitS1.js"
+import { mitralEarlySystolicMurmurRhythm } from "./Mitral/EarlySystolicMurmur.js";
+import { mitralLateSystolicMurmurRhythm } from "./Mitral/LateSystolicMurmur.js";
+import { mitralHolosystolicMurmurRhythm } from "./Mitral/HolosystolicMurmur.js";
+import { mitralClickLateSystolicMurmurRhythm } from "./Mitral/Click-Late-SystolicMurmur.js";
+import { mitralS4MidSysRhythm } from "./Mitral/S4&Mid-SysMurmur.js"
+import { mitralS3HolosysMurmurRhythm } from "./Mitral/S3&HolosysMurmur.js"
+import { mitralOpeningSnapAndDiastolicMurmurRhythm } from "./Mitral/MitralOpeningSnap&DiastolicMurmur.js"
+import { aorticNormalS1S2Rhythm } from "./Aortic/NormalS1S2.js"
+import { aorticSystolicMurmurAbsentS2Rhythm } from "./Aortic/SystolicMurmurAbsentS2.js";
+import { aorticEarlyDiastolicMurmurRhythm } from "./Aortic/EarlyDiastolicMurmur.js";
+import { aorticSystolicDiastolicMurmurRhythm } from "./Aortic/Systolic&DiastolicMurmur.js"
 
 export type AnimationKeyframe = {
 	time: number;
@@ -28,6 +28,7 @@ export type AnimationKeyframe = {
 export type SoundKeyframe = {
 	time: number;
 	soundPath: string;
+	volume?: number;
 };
 
 export type Rhythm = {
@@ -36,24 +37,16 @@ export type Rhythm = {
 	sound?: SoundKeyframe[];
 };
 
-export const defaultRhythm: Rhythm = normalS1S2Rhythm;
+export const defaultRhythm: Rhythm = mitralNormalS1S2Rhythm;
 
 export const availableRhythms: Rhythm[] = [
-	normalS1S2Rhythm,
-	s3GallopRhythm,
-	s4GallopRhythm,
-	midSystolicClickRhythm,
-	splitS1Rhythm,
-	earlySystolicMurmurRhythm,
-	midSystolicMurmurRhythm,
-	lateSystolicMurmurRhythm,
-	holosystolicMurmurRhythm,
-	clickLateSystolicMurmurRhythm,
-	s4MidSysRhythm,
-	s3HolosysMurmurRhythm,
-	mitralOpeningSnapAndDiastolicMurmurRhythm,
-	aorticNormalS1S2Rhythm,
-	aorticSystolicMurmurAbsentS2Rhythm,
-	aorticEarlyDiastolicMurmurRhythm,
-	aorticSystolicDiastolicMurmurRhythm
+	mitralNormalS1S2Rhythm,
+	mitralS3GallopRhythm,
+	mitralS4GallopRhythm,
+	mitralMidSystolicClickRhythm,
+	mitralEarlySystolicMurmurRhythm,
+	mitralMidSystolicMurmurRhythm,
+	mitralLateSystolicMurmurRhythm,
+	mitralClickLateSystolicMurmurRhythm,
+	aorticNormalS1S2Rhythm
 ];

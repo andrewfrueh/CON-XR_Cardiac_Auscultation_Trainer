@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Split S1 - Normal
-export const splitS1Rhythm: Rhythm = {
+export const mitralSplitS1Rhythm: Rhythm = {
     name: "Apex Split S1",
     sound: [
         // Split S1 sound

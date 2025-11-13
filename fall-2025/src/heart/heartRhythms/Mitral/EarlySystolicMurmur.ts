@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Early Systolic Murmur - Acute Mitral Regurg
-export const earlySystolicMurmurRhythm: Rhythm = {
+export const mitralEarlySystolicMurmurRhythm: Rhythm = {
     name: "Apex Early Systolic Murmur",
     sound: [
         // S1 sound

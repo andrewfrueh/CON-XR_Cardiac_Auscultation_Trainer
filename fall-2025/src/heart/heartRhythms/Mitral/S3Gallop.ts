@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - S3 Gallop - Both Normal and Cardiomyopathy
-export const s3GallopRhythm: Rhythm = {
+export const mitralS3GallopRhythm: Rhythm = {
     name: "Apex S3 Gallop",
     sound: [
         // S1 sound

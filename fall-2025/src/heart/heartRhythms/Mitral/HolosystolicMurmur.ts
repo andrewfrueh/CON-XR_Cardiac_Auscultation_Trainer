@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Holosystolic Murmur - Classic Mitral Regurg or Ventricular Septal Defect when heard along the left sternal border
-export const holosystolicMurmurRhythm: Rhythm = {
+export const mitralHolosystolicMurmurRhythm: Rhythm = {
     name: "Apex Holosystolic Murmur",
     sound: [
         // S1 sound

@@ -1,5 +1,5 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - Mitral Opening Snap & Diastolic Murmur - Mitral Stenosis
 export const mitralOpeningSnapAndDiastolicMurmurRhythm: Rhythm = {

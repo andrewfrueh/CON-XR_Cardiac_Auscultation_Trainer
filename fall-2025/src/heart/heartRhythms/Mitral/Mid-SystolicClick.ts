@@ -1,7 +1,8 @@
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Mid-Systolic Click - Mitral Valve Prolapse (MVP)
-export const midSystolicClickRhythm: Rhythm = {
+export const mitralMidSystolicClickRhythm: Rhythm = {
     name: "Apex Mid-Systolic Click",
     sound: [
         // S1 sound

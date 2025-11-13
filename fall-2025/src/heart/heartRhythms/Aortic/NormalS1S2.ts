@@ -1,5 +1,5 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Supine, Bell - Normal S1 S2 - Normal
 export const aorticNormalS1S2Rhythm: Rhythm = {

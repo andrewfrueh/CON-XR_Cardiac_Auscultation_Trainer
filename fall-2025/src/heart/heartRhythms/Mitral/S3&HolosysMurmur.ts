@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - S3 & Holosys Murmur - Dilated Cardiomyopathy w/ Mitral Regurg
-export const s3HolosysMurmurRhythm: Rhythm = {
+export const mitralS3HolosysMurmurRhythm: Rhythm = {
     name: "Apex S3 & Holosys Murmur",
     sound: [
         // S1 sound

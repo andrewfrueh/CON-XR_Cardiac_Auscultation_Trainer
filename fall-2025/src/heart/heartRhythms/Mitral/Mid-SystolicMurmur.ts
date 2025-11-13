@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Mid-Systolic Murmur - Mitral Regurg due to CAD
-export const midSystolicMurmurRhythm: Rhythm = {
+export const mitralMidSystolicMurmurRhythm: Rhythm = {
     name: "Apex Mid-Systolic Murmur",
     sound: [
         // S1 sound

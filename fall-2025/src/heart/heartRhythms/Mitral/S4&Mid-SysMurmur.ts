@@ -1,8 +1,8 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - S4 & Mid-Sys Murmur - Ischemic Cardiomyopathy w/ Mitral Regurg
-export const s4MidSysRhythm: Rhythm = {
+export const mitralS4MidSysRhythm: Rhythm = {
     name: "Apex S4 & Mid-Sys Murmur",
     sound: [
         // S4 sound

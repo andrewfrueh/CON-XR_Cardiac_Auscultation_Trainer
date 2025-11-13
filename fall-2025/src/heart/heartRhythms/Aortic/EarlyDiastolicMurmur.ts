@@ -1,5 +1,5 @@
-import { MotionCurves } from "../../utils/curves.js";
-import { Rhythm } from "./Rhythm.js";
+import { MotionCurves } from "../../../utils/curves.js";
+import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Sitting, Bell - Early Diastolic Murmur - Aortic Regurg
 export const aorticEarlyDiastolicMurmurRhythm: Rhythm = {
