@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { HeartController } from './HeartController.js';
 
-// Global variables with proper types
+// Global variables 
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
@@ -44,7 +44,7 @@ export function init(): void {
     // Create renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
     
-    // Size renderer to match container (already retrieved above)
+    // Size renderer to match container
     if (container) {
         // Size renderer to match container, not full viewport
         const containerRect = container.getBoundingClientRect();
@@ -408,13 +408,13 @@ declare global {
 function switchHeartRhythm(rhythmName: string): void {
     const success = heartController.switchToRhythmByName(rhythmName);
     if (success) {
-        console.log(`Switched to heart rhythm: ${rhythmName}`);
+        // console.log(`Switched to heart rhythm: ${rhythmName}`);
     }
 }
 
 function setHeartSoundVolume(volume: number): void {
     heartController.setSoundVolume(volume);
-    console.log(`Heart sound volume set to: ${(volume * 100).toFixed(0)}%`);
+    // console.log(`Heart sound volume set to: ${(volume * 100).toFixed(0)}%`);
 }
 
 function getAvailableHeartRhythms(): string[] {
@@ -439,15 +439,6 @@ function toggleMode(): void {
 }
 
 // Auscultation point management functions
-/**
- * Example usage of auscultation callback:
- * 
- * window.setAuscultationCallback((point) => {
- *     console.log(`User selected: ${point}`);
- *     // You can add custom logic here
- *     // For example, change the camera angle, highlight specific parts, etc.
- * });
- */
 function toggleAuscultationPanel(): void {
     const panel = document.getElementById('auscultationPanel');
     if (panel) {
@@ -498,7 +489,7 @@ function selectAuscultationPoint(point: string): void {
         auscultationCallback(auscultationPoint);
     }
     
-    console.log(`Selected auscultation point: ${auscultationPoint}`);
+    // console.log(`Selected auscultation point: ${auscultationPoint}`);
 }
 
 function switchRhythmForAuscultationPoint(point: AuscultationPoint): void {

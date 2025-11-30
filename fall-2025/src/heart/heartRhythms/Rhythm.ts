@@ -36,7 +36,7 @@ export type Rhythm = {
 	name: string;
 	animation?: AnimationKeyframe[];
 	sound?: SoundKeyframe[];
-	location: string;
+	location: "Aortic" | "Pulmonic" | "Tricuspid" | "Mitral";
 };
 
 export const defaultRhythm: Rhythm = mitralNormalS1S2Rhythm;

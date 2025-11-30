@@ -11,7 +11,7 @@ export const mitralNormalS1S2Rhythm: Rhythm = {
       time: 0,
       blendshape: ["LA", "RA"],
       animationEnd: 0.15,
-      value: 1,
+      value: 2, // Double the contraction
       curveFunction: MotionCurves.ATRIAL_CONTRACTION,
     },
     // Atria relax
