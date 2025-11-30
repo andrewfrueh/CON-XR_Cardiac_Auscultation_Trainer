@@ -549,3 +549,16 @@
     }
 }
 
+.aortic-group {
+    display: none;
+}
+.apex-group {
+    display: block;
+}
+.pulmonic-group {
+    display: none;
+}
+
+.tricuspid-group {
+    display: none;
+}

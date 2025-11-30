@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { CurveFunction, MotionCurves } from '../utils/curves.js';
 import { defaultRhythm, Rhythm, availableRhythms } from './heartRhythms/Rhythm.js';
 import { AnimationKeyframe, SoundKeyframe } from './heartRhythms/Rhythm.js';
+import { rhythmGroups } from "./heartRhythms/rhythmOptions.js";
 
 interface BlendshapeCategory {
     categoryName: string;
@@ -39,7 +40,10 @@ export class HeartController {
     private morphTargetMeshes: THREE.Mesh[] = [];
     private currentBlendshapes: Map<string, number> = new Map();
     private targetBlendshapes: Map<string, number> = new Map();
-    
+
+    //Rhythm Options
+    private rhythmSelect: HTMLSelectElement | null = null;
+
     // Heart chamber names mapping from rhythm names to actual blendshape names
     private readonly CHAMBER_NAMES = {
         LA: 'LA',
@@ -421,4 +425,47 @@ export class HeartController {
     private lerp(a: number, b: number, t: number): number {
         return a + (b - a) * t;
     }
+    public initializeRhythmSelect(selectId: string): void {
+        const select = document.getElementById(selectId) as HTMLSelectElement | null;
+        if (!select) {
+            console.warn("Rhythm select element not found:", selectId);
+            return;
+        }
+        this.rhythmSelect = select;
+    }
+
+/*
+    public loadRhythmOptions(location: string): void {
+        if (!this.rhythmSelect) {
+            console.warn("Rhythm select element not initialized");
+            return;
+        }
+
+        const group = rhythmGroups[location];
+        if (!group) {
+            console.warn("No rhythm group for:", location);
+            this.rhythmSelect.innerHTML = "";
+            return;
+        }
+
+        // Clear existing options
+        this.rhythmSelect.innerHTML = "";
+
+        // Populate new options
+        for (const opt of group) {
+            const option = document.createElement("option");
+            option.value = opt.value;
+            option.textContent = opt.label;
+            this.rhythmSelect.appendChild(option);
+        }
+
+        // Auto-switch to the first rhythm
+        const first = group[0];
+        if (first) {
+            this.switchToRhythmByName(first.value);
+        }
+    }
+*/
 }
+
+

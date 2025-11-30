@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { HeartController } from './HeartController.js';
+import { rhythmGroups } from './RhythmOptions.js';
 
 // Global variables with proper types
 let scene: THREE.Scene;
@@ -17,6 +18,7 @@ let fbxLoader: FBXLoader;
 let textureLoader: THREE.TextureLoader;
 let heartTexture: THREE.Texture | null = null;
 let isDarkMode = true;
+const rhythmSelect = document.getElementById('rhythmSelect') as HTMLSelectElement;
 
 // Blendshapes/Morph targets variables for FBX
 let morphTargetMeshes: THREE.Mesh[] = [];
@@ -93,6 +95,8 @@ export function init(): void {
     
     // Start animation loop
     animate();
+
+    selectAuscultationPoint('aortic');
     
     // Handle window resize
     window.addEventListener('resize', onWindowResize);
@@ -456,6 +460,7 @@ function toggleAuscultationPanel(): void {
 }
 
 function selectAuscultationPoint(point: string): void {
+    updateRhythmOptions(point);
     const validPoints: AuscultationPoint[] = ['aortic', 'pulmonic', 'tricuspid', 'mitral'];
     
     if (!validPoints.includes(point as AuscultationPoint)) {
@@ -490,9 +495,11 @@ function selectAuscultationPoint(point: string): void {
         selectedPoint.classList.add('active');
     }
     
+    const normalRhythmValue = `${point.charAt(0).toUpperCase() + point.slice(1)} Normal S1 S2`;
+
     // Automatically switch to appropriate rhythm based on auscultation point
     switchRhythmForAuscultationPoint(auscultationPoint);
-    
+    heartController.switchToRhythmByName(normalRhythmValue);
     // Call the callback if one is registered
     if (auscultationCallback) {
         auscultationCallback(auscultationPoint);
@@ -505,8 +512,8 @@ function switchRhythmForAuscultationPoint(point: AuscultationPoint): void {
     // Map auscultation points to default rhythms
     const rhythmMap: Record<AuscultationPoint, string> = {
         'aortic': 'Aortic Normal S1 S2',
-        'pulmonic': 'Apex Normal S1 S2',
-        'tricuspid': 'Apex Normal S1 S2',
+        'pulmonic': 'Pulmonic Normal S1 S2',
+        'tricuspid': 'Tricuspid Normal S1 S2',
         'mitral': 'Apex Normal S1 S2'
     };
     
@@ -528,6 +535,22 @@ function setAuscultationCallback(callback: (point: AuscultationPoint) => void): 
 
 function getCurrentAuscultationPoint(): AuscultationPoint | null {
     return currentAuscultationPoint;
+}
+
+function updateRhythmOptions(point: string): void {
+    // Clear current options
+    rhythmSelect.innerHTML = '';
+
+    // Get rhythms for selected point
+    const options = rhythmGroups[point] || [];
+
+    // Add new options
+    options.forEach(opt => {
+        const optionEl = document.createElement('option');
+        optionEl.value = opt.value;
+        optionEl.textContent = opt.label;
+        rhythmSelect.appendChild(optionEl);
+    });
 }
 
 
