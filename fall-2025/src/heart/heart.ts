@@ -502,10 +502,10 @@ function selectAuscultationPoint(point: string): void {
 function switchRhythmForAuscultationPoint(point: AuscultationPoint): void {
     // Map auscultation points to default rhythms
     const rhythmMap: Record<AuscultationPoint, string> = {
-        'aortic': 'Aortic Normal S1 S2',
-        'pulmonic': 'Pulmonic Normal S1 S2',
-        'tricuspid': 'Tricuspid Normal S1 S2',
-        'mitral': 'Apex Normal S1 S2'
+        'aortic': 'Normal S1 S2',
+        'pulmonic': 'Normal S1 S2',
+        'tricuspid': 'Normal S1 S2',
+        'mitral': 'Normal S1 S2'
     };
     
     const rhythmName = rhythmMap[point];
