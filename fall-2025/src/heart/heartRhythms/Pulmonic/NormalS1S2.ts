@@ -2,7 +2,7 @@ import { MotionCurves } from "../../../utils/curves.js";
 import { Rhythm } from "../Rhythm.js";
 
 export const pulmonicNormalS1S2Rhythm: Rhythm = {
-    name: "Pulmonic Normal S1 S2",
+    name: "Normal S1 S2",
     location: "Pulmonic",
     sound: [
         {

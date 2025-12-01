@@ -3,7 +3,7 @@ import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Left Ducubitus, Bell - Sys Click w/ Late Sys Murmur - MVP w/ Mitral Regurg
 export const aorticClickLateSystolicMurmurRhythm: Rhythm = {
-    name: "Aortic Click w/ Late Systolic Murmur",
+    name: "Click w/ Late Systolic Murmur",
     location: "Aortic",
     sound: [
         // S1 sound from aortic location

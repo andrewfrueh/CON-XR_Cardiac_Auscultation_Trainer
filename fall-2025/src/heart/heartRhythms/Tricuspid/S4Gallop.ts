@@ -3,7 +3,7 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - S4 Gallop - Left Ventricular Hypertrophy
 export const tricuspidS4GallopRhythm: Rhythm = {
-    name: "Tricuspid S4 Gallop",
+    name: "S4 Gallop",
     location: "Tricuspid",
     sound: [
         // S4 sound

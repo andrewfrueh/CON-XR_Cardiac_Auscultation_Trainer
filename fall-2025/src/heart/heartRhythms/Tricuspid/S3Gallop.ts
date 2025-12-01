@@ -3,7 +3,7 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - S3 Gallop - Both Normal and Cardiomyopathy
 export const tricuspidS3GallopRhythm: Rhythm = {
-    name: "Tricuspid S3 Gallop",
+    name: "S3 Gallop",
     location: "Tricuspid",
     sound: [
         // S1 sound

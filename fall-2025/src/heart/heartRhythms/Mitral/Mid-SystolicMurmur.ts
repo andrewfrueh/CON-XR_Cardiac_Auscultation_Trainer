@@ -3,7 +3,7 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Mid-Systolic Murmur - Mitral Regurg due to CAD
 export const mitralMidSystolicMurmurRhythm: Rhythm = {
-    name: "Apex Mid-Systolic Murmur",
+    name: "Mid-Systolic Murmur",
     location: "Mitral",
     sound: [
         // S1 sound

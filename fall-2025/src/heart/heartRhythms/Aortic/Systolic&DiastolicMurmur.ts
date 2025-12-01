@@ -3,7 +3,7 @@ import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Sitting, Bell - Systolic & Diastolic Murmur - Combined Aortic Stenosis and Regurg
 export const aorticSystolicDiastolicMurmurRhythm: Rhythm = {
-    name: "Aortic Systolic & Diastolic Murmur",
+    name: "Systolic & Diastolic Murmur",
     location: "Aortic",
     sound: [
         // S1 sound
