@@ -44,18 +44,19 @@ The rules we setup is from our own research about what the rhythms should sound 
 				Early Systolic Murmur sounds similar to Mitral region so no changes
 				Mid Systolic Murmur sounds a little louder in this location
 				Late Systolic Murmur sounds quieter in this location
-		
 
 		Pulmonic:
-			Normal S1 S2 - from library
-			The rest of the rhythms were procedurally generated
+			All the rhythms were procedurally generated
 			Rules:
-			
+				S2 is the loudest 
+				S1 is softer
+				S3, S4, annd click usually very faint or not heard
+				Murmurs are not as prominant as the mitral location
 
 		Tricuspid:
 			All the rhythms were procedurally generated
 			Rules:
-				Murmurs are not has prominant as the mitral location
+				Murmurs are not as prominant as the mitral location
 				S3 and S4 waves are not as prominant 
 				S1 and S2 not as prominant and lower pitched
 			
