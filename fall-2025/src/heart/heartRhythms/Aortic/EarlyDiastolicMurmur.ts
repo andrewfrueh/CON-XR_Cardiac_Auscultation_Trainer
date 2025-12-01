@@ -3,7 +3,7 @@ import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Sitting, Bell - Early Diastolic Murmur - Aortic Regurg
 export const aorticEarlyDiastolicMurmurRhythm: Rhythm = {
-    name: "Aortic Early Diastolic Murmur",
+    name: "Early Diastolic Murmur",
     location: "Aortic",
     sound: [
         // S1 sound
