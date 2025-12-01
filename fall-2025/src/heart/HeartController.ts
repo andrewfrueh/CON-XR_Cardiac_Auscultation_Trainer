@@ -404,8 +404,7 @@ export class HeartController {
             // Set volume
             gainNode.gain.value = (volume ?? 1) * this.soundVolume;
             
-            // Add subtle pitch variation for realism (±3%)
-            //const pitchVariation = 1 + (Math.random() - 0.5) * 0.06; // ±3%
+            // Set pitch
             source.playbackRate.value = pitch || 1;
             
             // Connect audio nodes
@@ -433,39 +432,6 @@ export class HeartController {
         }
         this.rhythmSelect = select;
     }
-
-/*
-    public loadRhythmOptions(location: string): void {
-        if (!this.rhythmSelect) {
-            console.warn("Rhythm select element not initialized");
-            return;
-        }
-
-        const group = rhythmGroups[location];
-        if (!group) {
-            console.warn("No rhythm group for:", location);
-            this.rhythmSelect.innerHTML = "";
-            return;
-        }
-
-        // Clear existing options
-        this.rhythmSelect.innerHTML = "";
-
-        // Populate new options
-        for (const opt of group) {
-            const option = document.createElement("option");
-            option.value = opt.value;
-            option.textContent = opt.label;
-            this.rhythmSelect.appendChild(option);
-        }
-
-        // Auto-switch to the first rhythm
-        const first = group[0];
-        if (first) {
-            this.switchToRhythmByName(first.value);
-        }
-    }
-*/
 }
 
 

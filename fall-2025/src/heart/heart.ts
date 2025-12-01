@@ -67,7 +67,7 @@ export function init(): void {
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.enablePan = false; // Disable panning
-        controls.enableZoom = true; // Disable zoom controls
+        controls.enableZoom = true; // Enable zoom controls
         controls.minDistance = 4; // Minimum zoom distance
         controls.maxDistance = 10; // Maximum zoom distance
         

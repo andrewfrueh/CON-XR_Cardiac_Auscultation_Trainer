@@ -3,6 +3,8 @@ This document will serve as information of what heart rhythms will be displayed 
 These sounds were taken from the University of Michigan Heart Sound and Murmur Library. https://open.umich.edu/find/open-educational-resources/medical/heart-sound-murmur-library
 
 The animation of the heart actually beating is the same for all of the rhythms. It only shows the beating animation of the heart, which includes the atria contracting and then the ventericles contracting.
+The animation can be found in the NormalS1S2.ts file in the Aortic folder.
+
 
 This section will show all rhythms that are displayed in the application. These rhythms apply to all auscultation locations.
 
@@ -25,8 +27,8 @@ While these rhythms sound close to the original (taken from the library), we wan
 
 
 
-This section will discuss whether the rhythms were taken straight from the library (noted above) or if they were procedurally generate. If procedurally generated, rules for how we made the sounds will be shown.
-The rules we setup is from our own research about what the rhythms should sound like from the different auscultation locations (this research will include help from AI).
+This section will discuss whether the rhythms were taken straight from the library (noted above) or if they were procedurally generated. If procedurally generated, rules for how we made the sounds will be shown.
+The rules we setup is from our own research about what the rhythms should sound like from the different auscultation locations (this research will include help from AI and more information can be found in the Rhythm Auscultation Details excel sheet in the shared OneDrive folder).
 
 	Auscultation Locations:
 
