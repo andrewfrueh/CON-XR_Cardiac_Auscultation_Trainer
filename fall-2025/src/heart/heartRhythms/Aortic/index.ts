@@ -19,7 +19,7 @@ export const aorticRhythms = [
     aorticMidSystolicMurmurRhythm,
     aorticLateSystolicMurmurRhythm,
     aorticClickLateSystolicMurmurRhythm,
-    aorticEarlyDiastolicMurmurRhythm,
-    aorticSystolicDiastolicMurmurRhythm,
-    aorticSystolicMurmurAbsentS2Rhythm,
+   // aorticEarlyDiastolicMurmurRhythm,
+   // aorticSystolicDiastolicMurmurRhythm,
+   // aorticSystolicMurmurAbsentS2Rhythm,
 ];

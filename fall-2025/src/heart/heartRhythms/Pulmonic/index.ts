@@ -19,7 +19,7 @@ export const pulmonicRhythms = [
     pulmonicMidSystolicMurmurRhythm,
     pulmonicLateSystolicMurmurRhythm,
     pulmonicClickLateSystolicMurmurRhythm,
-    pulmonicSystolicDiastolicMurmurRhythm,
-    pulmonicSystolicMurmurAbsentS2Rhythm,
-    pulmonicEarlyDiastolicMurmurRhythm,
+   // pulmonicSystolicDiastolicMurmurRhythm,
+   // pulmonicSystolicMurmurAbsentS2Rhythm,
+   // pulmonicEarlyDiastolicMurmurRhythm,
 ];
