@@ -20,8 +20,8 @@ export const mitralRhythms = [
     mitralMidSystolicMurmurRhythm,
     mitralLateSystolicMurmurRhythm,
     mitralClickLateSystolicMurmurRhythm,
-    mitralOpeningSnapAndDiastolicMurmurRhythm,
-    mitralS4MidSysRhythm,
-    mitralS3HolosysMurmurRhythm,
-    mitralHolosystolicMurmurRhythm,
+  // mitralOpeningSnapAndDiastolicMurmurRhythm,
+  // mitralS4MidSysRhythm,
+  // mitralS3HolosysMurmurRhythm,
+  // mitralHolosystolicMurmurRhythm,
 ];
