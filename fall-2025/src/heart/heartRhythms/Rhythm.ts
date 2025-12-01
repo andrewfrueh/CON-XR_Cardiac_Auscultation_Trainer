@@ -17,6 +17,7 @@ import { aorticSystolicMurmurAbsentS2Rhythm } from "./Aortic/SystolicMurmurAbsen
 import { aorticEarlyDiastolicMurmurRhythm } from "./Aortic/EarlyDiastolicMurmur.js";
 import { aorticSystolicDiastolicMurmurRhythm } from "./Aortic/Systolic&DiastolicMurmur.js"
 import {aorticClickLateSystolicMurmurRhythm} from "./Aortic/Click-Late-SystolicMurmur.js"
+import {pulmonicMidSystolicMurmurRhythm} from "./Pulmonic/Mid-SystolicMurmur.js"
 export type AnimationKeyframe = {
 	time: number;
 	animationEnd: number;
@@ -51,5 +52,6 @@ export const availableRhythms: Rhythm[] = [
 	mitralLateSystolicMurmurRhythm,
 	mitralClickLateSystolicMurmurRhythm,
 	aorticNormalS1S2Rhythm,
-	aorticClickLateSystolicMurmurRhythm
+	aorticClickLateSystolicMurmurRhythm,
+	pulmonicMidSystolicMurmurRhythm
 ];
