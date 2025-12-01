@@ -38,6 +38,10 @@ The rules we setup is from our own research about what the rhythms should sound 
 			The rest of the rhythms were procedurally generated
 			Rules:
 				S3 and S4 sounds can barely be heard from this region (or not heard at all)
+				Click is barely heard hear (or not at all here)
+				Early Systolic Murmur sounds similar to Mitral region so no changes
+				Mid Systolic Murmur sounds a little louder in this location
+				Late Systolic Murmur sounds quieter in this location
 		
 
 		Pulmonic:
