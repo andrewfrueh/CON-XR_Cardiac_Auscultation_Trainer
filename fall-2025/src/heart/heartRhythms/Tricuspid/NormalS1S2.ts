@@ -2,7 +2,7 @@ import { MotionCurves } from "../../../utils/curves.js";
 import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Normal S1 S2 - Normal
-export const mitralNormalS1S2Rhythm: Rhythm = {
+export const tricuspidNormalS1S2Rhythm: Rhythm = {
     name: "Tricuspid Normal S1 S2",
     location: "Tricuspid",
     sound: [

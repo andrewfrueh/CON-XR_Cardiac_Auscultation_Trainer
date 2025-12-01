@@ -2,8 +2,8 @@ import { MotionCurves } from "../../../utils/curves.js";
 import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Left Ducubitus, Bell - S3 Gallop - Both Normal and Cardiomyopathy
-export const aorticS3Gallop: Rhythm = { 
-    name: "S3 Gallop",
+export const aorticS3GallopRhythm: Rhythm = { 
+    name: "Aortic S3 Gallop",
     location: "Aortic",
     sound: [
         // S1 sound from aortic location

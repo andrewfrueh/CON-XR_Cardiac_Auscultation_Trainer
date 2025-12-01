@@ -12,7 +12,13 @@ import { mitralClickLateSystolicMurmurRhythm } from "./Mitral/Click-Late-Systoli
 import { mitralS4MidSysRhythm } from "./Mitral/S4&Mid-SysMurmur.js"
 import { mitralS3HolosysMurmurRhythm } from "./Mitral/S3&HolosysMurmur.js"
 import { mitralOpeningSnapAndDiastolicMurmurRhythm } from "./Mitral/MitralOpeningSnap&DiastolicMurmur.js"
-import { aorticNormalS1S2Rhythm } from "./Aortic/NormalS1S2.js"
+import { aorticNormalS1S2Rhythm } from "./Aortic/NormalS1S2.js";
+import { aorticS3GallopRhythm } from "./Aortic/S3Gallop.js";
+import { aorticS4GallopRhythm } from "./Aortic/S4Gallop.js";
+import { aorticMidSystolicClickRhythm } from "./Aortic/Mid-SystolicClick.js";
+import { aorticEarlySystolicMurmurRhythm } from "./Aortic/EarlySystolicMurmur.js";
+import { aorticMidSystolicMurmurRhythm } from "./Aortic/Mid-SystolicMurmur.js";
+import { aorticLateSystolicMurmurRhythm } from "./Aortic/LateSystolicMurmur.js";
 import { aorticSystolicMurmurAbsentS2Rhythm } from "./Aortic/SystolicMurmurAbsentS2.js";
 import { aorticEarlyDiastolicMurmurRhythm } from "./Aortic/EarlyDiastolicMurmur.js";
 import { aorticSystolicDiastolicMurmurRhythm } from "./Aortic/Systolic&DiastolicMurmur.js"
@@ -52,6 +58,11 @@ export const availableRhythms: Rhythm[] = [
 	mitralLateSystolicMurmurRhythm,
 	mitralClickLateSystolicMurmurRhythm,
 	aorticNormalS1S2Rhythm,
-	aorticClickLateSystolicMurmurRhythm,
-	pulmonicMidSystolicMurmurRhythm
+	aorticS3GallopRhythm,
+	aorticS4GallopRhythm,
+	aorticMidSystolicClickRhythm,
+	aorticEarlySystolicMurmurRhythm,
+	aorticMidSystolicMurmurRhythm,
+	aorticLateSystolicMurmurRhythm,
+	aorticClickLateSystolicMurmurRhythm
 ];

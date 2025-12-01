@@ -1,31 +1,28 @@
 import { MotionCurves } from "../../../utils/curves.js";
 import { Rhythm } from "../Rhythm.js";
 
-// Apex, Left Ducubitus, Bell - Sys Click w/ Late Sys Murmur - MVP w/ Mitral Regurg
-export const tricuspidClickLateSystolicMurmurRhythm: Rhythm = {
-    name: "Tricuspid Click w/ Late Systolic Murmur",
+// Apex, Supine, Bell - Mid-Systolic Click - Mitral Valve Prolapse (MVP)
+export const tricuspidMidSystolicClickRhythm: Rhythm = {
+    name: "Tricuspid Mid-Systolic Click",
     location: "Tricuspid",
     sound: [
         // S1 sound
         {
             time: 0.32,
             soundPath: "assets/sounds/heart-normal-S1.wav",
+            volume: .8
         },
         // Click sound
         {
-            time: 0.50,
+            time: 0.42,
             soundPath: "assets/sounds/click.wav",
-        },
-        // Late Systolic Murmur sound
-        {
-            time: 0.53,
-            soundPath: "assets/sounds/late-Systolic-Murmur.wav",
-            volume: .7
+            volume: .8
         },
         // S2 sound
         {
             time: 0.62,
             soundPath: "assets/sounds/heart-normal-S2.wav",
+            volume: .8
         },
     ]
 };
