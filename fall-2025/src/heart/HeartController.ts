@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { CurveFunction, MotionCurves } from '../utils/curves.js';
 import { defaultRhythm, Rhythm, availableRhythms } from './heartRhythms/Rhythm.js';
 import { AnimationKeyframe, SoundKeyframe } from './heartRhythms/Rhythm.js';
-import { rhythmGroups } from "./heartRhythms/rhythmOptions.js";
+import { rhythmGroups } from "./RhythmOptions.js";
 
 interface BlendshapeCategory {
     categoryName: string;
