@@ -2,7 +2,6 @@ import { MotionCurves } from "../../../utils/curves.js";
 import { Rhythm } from "../Rhythm.js";
 
 export const pulmonicS3Gallop: Rhythm = { 
-    name: "S3 Gallop",
     location: "Pulmonic",
     sound: [
         {

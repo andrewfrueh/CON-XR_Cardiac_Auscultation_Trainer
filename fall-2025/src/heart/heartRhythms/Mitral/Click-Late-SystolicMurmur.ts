@@ -3,7 +3,6 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - Sys Click w/ Late Sys Murmur - MVP w/ Mitral Regurg
 export const mitralClickLateSystolicMurmurRhythm: Rhythm = {
-    name: "Click w/ Late Systolic Murmur",
     location: "Mitral",
     sound: [
         // S1 sound

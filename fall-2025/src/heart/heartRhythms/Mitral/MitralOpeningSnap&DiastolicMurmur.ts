@@ -3,7 +3,6 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Left Ducubitus, Bell - Mitral Opening Snap & Diastolic Murmur - Mitral Stenosis
 export const mitralOpeningSnapAndDiastolicMurmurRhythm: Rhythm = {
-    name: "Mitral Opening Snap & Diastolic Murmur",
     location: "Mitral",
     sound: [
         // S1 sound

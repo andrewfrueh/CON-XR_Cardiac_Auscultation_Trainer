@@ -3,7 +3,6 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Early Systolic Murmur - Acute Mitral Regurg
 export const mitralEarlySystolicMurmurRhythm: Rhythm = {
-    name: "Early Systolic Murmur",
     location: "Mitral",
     sound: [
         // S1 sound
