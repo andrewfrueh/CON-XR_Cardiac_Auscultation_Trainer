@@ -158,7 +158,7 @@ function loadHeartModel(): void {
             heart.scale.setScalar(scale);
             
             // Center the heart
-            heart.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+            heart.position.set(-center.x * scale, -center.y * scale + 0.2, -center.z * scale);
             
             // Start heart controller animation
             heartController.start();
@@ -428,7 +428,7 @@ function toggleMode(): void {
     } else {
         scene.background = new THREE.Color(0xffffff); // light background
         document.body.classList.add('light-mode');
-        if (iconSpan) iconSpan.textContent = '🌞';      // sun icon for light mode
+        if (iconSpan) iconSpan.textContent = '🔆';      // sun icon for light mode
     }
 }
 
