@@ -6,20 +6,15 @@ import { aorticEarlySystolicMurmurRhythm } from "./EarlySystolicMurmur.js";
 import { aorticMidSystolicMurmurRhythm } from "./Mid-SystolicMurmur.js";
 import { aorticLateSystolicMurmurRhythm } from "./LateSystolicMurmur.js";
 import { aorticClickLateSystolicMurmurRhythm } from "./Click-Late-SystolicMurmur.js";
-import { aorticEarlyDiastolicMurmurRhythm } from "./EarlyDiastolicMurmur.js";
-import { aorticSystolicDiastolicMurmurRhythm } from "./Systolic&DiastolicMurmur.js";
-import { aorticSystolicMurmurAbsentS2Rhythm } from "./SystolicMurmurAbsentS2.js";
+import { AuscultationRhythms } from "../Rhythm.js";
 
-export const aorticRhythms = [
-    aorticNormalS1S2Rhythm,
-    aorticS3GallopRhythm,
-    aorticS4GallopRhythm,
-    aorticMidSystolicClickRhythm,
-    aorticEarlySystolicMurmurRhythm,
-    aorticMidSystolicMurmurRhythm,
-    aorticLateSystolicMurmurRhythm,
-    aorticClickLateSystolicMurmurRhythm,
-   // aorticEarlyDiastolicMurmurRhythm,
-   // aorticSystolicDiastolicMurmurRhythm,
-   // aorticSystolicMurmurAbsentS2Rhythm,
-];
+export const aorticRhythms: AuscultationRhythms = {
+    NormalS1S2: aorticNormalS1S2Rhythm,
+    S3Gallop: aorticS3GallopRhythm,
+    S4Gallop: aorticS4GallopRhythm,
+    MidSystolicClick: aorticMidSystolicClickRhythm,
+    EarlySystolicMurmur: aorticEarlySystolicMurmurRhythm,
+    MidSystolicMurmur: aorticMidSystolicMurmurRhythm,
+    LateSystolicMurmur: aorticLateSystolicMurmurRhythm,
+    ClickLateSystolicMurmur: aorticClickLateSystolicMurmurRhythm,
+};

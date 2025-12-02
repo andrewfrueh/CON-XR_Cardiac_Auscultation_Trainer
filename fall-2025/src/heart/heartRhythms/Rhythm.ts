@@ -20,18 +20,36 @@ export type SoundKeyframe = {
 	pitch?: number;
 };
 
+export type AuscultationLocation = "Aortic" | "Pulmonic" | "Tricuspid" | "Mitral";
+
 export type Rhythm = {
 	name: string;
 	animation?: AnimationKeyframe[];
 	sound?: SoundKeyframe[];
-	location: "Aortic" | "Pulmonic" | "Tricuspid" | "Mitral";
+	location: AuscultationLocation;
 };
 
 export const defaultRhythm = aorticNormalS1S2Rhythm;
 
-export const availableRhythms: Rhythm[] = [
-	...aorticRhythms,
-	...mitralRhythms,
-	...pulmonicRhythms,
-	...tricuspidRhythms,
-];
+export type SelectableRhythm = "ClickLateSystolicMurmur" | "EarlySystolicMurmur" | "LateSystolicMurmur" | "MidSystolicClick" | "MidSystolicMurmur" | "NormalS1S2" | "S3Gallop" | "S4Gallop";
+export const SelectableRhythmName: Record<SelectableRhythm, string> = {
+	ClickLateSystolicMurmur: "Click w/ Late Systolic Murmur",
+	EarlySystolicMurmur: "Early Systolic Murmur",
+	LateSystolicMurmur: "Late Systolic Murmur",
+	MidSystolicClick: "Mid Systolic Click",
+	MidSystolicMurmur: "Mid Systolic Murmur",
+	NormalS1S2: "Normal S1 S2",
+	S3Gallop: "S3 Gallop",
+	S4Gallop: "S4 Gallop",
+}
+
+export type AuscultationRhythms = {
+	[key in SelectableRhythm]: Rhythm;
+}
+
+export const availableRhythms: Record<AuscultationLocation, AuscultationRhythms> = {
+    Aortic: aorticRhythms,
+    Pulmonic: pulmonicRhythms,
+    Tricuspid: tricuspidRhythms,
+    Mitral: mitralRhythms,
+};

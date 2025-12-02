@@ -1,9 +1,8 @@
 // Initially created with Cursor using claude-4-sonnet
 import * as THREE from 'three';
 import { CurveFunction, MotionCurves } from '../utils/curves.js';
-import { defaultRhythm, Rhythm, availableRhythms } from './heartRhythms/Rhythm.js';
+import { defaultRhythm, Rhythm, availableRhythms, AuscultationRhythms, SelectableRhythm, AuscultationLocation } from './heartRhythms/Rhythm.js';
 import { AnimationKeyframe, SoundKeyframe } from './heartRhythms/Rhythm.js';
-import { rhythmGroups } from "./RhythmOptions.js";
 
 interface BlendshapeCategory {
     categoryName: string;
@@ -43,6 +42,8 @@ export class HeartController {
 
     //Rhythm Options
     private rhythmSelect: HTMLSelectElement | null = null;
+    private rythmSelectableName : SelectableRhythm = "NormalS1S2";
+    private auscultationLocation: AuscultationLocation = "Aortic";
 
     // Heart chamber names mapping from rhythm names to actual blendshape names
     private readonly CHAMBER_NAMES = {
@@ -149,7 +150,7 @@ export class HeartController {
     /**
      * Set the heart rhythm pattern
      */
-    public setRhythm(rhythm: Rhythm): void {
+    private setRhythm(rhythm: Rhythm): void {
         this.rhythm = rhythm;
     }
     
@@ -163,28 +164,17 @@ export class HeartController {
     /**
      * Switch to a different rhythm pattern
      */
-    public switchToRhythm(rhythm: Rhythm): void {
-        this.setRhythm(rhythm);
+    public switchToRhythm(rhythm: SelectableRhythm): void {
+        const rhythmObject = availableRhythms[this.auscultationLocation][rhythm];
+        this.rythmSelectableName = rhythm;
+        this.setRhythm(rhythmObject);
     }
     
     /**
      * Get all available rhythm patterns
      */
-    public getAvailableRhythms(): Rhythm[] {
-        return availableRhythms;
-    }
-    
-    /**
-     * Switch to rhythm by name
-     */
-    public switchToRhythmByName(name: string): boolean {
-        const rhythm = availableRhythms.find(r => r.name === name);
-        if (rhythm) {
-            this.switchToRhythm(rhythm);
-            return true;
-        }
-        console.warn(`Rhythm "${name}" not found`);
-        return false;
+    public getAvailableRhythms(): AuscultationRhythms {
+        return availableRhythms[this.rhythm.location];
     }
     
     /**
@@ -206,6 +196,14 @@ export class HeartController {
      */
     public getSoundVolume(): number {
         return this.soundVolume;
+    }
+
+    /**
+     * Set the auscultation location
+     */
+    public setAuscultationLocation(location: AuscultationLocation): void {
+        this.auscultationLocation = location;
+        this.setRhythm(availableRhythms[location][this.rythmSelectableName]);
     }
     
     /**

@@ -10,18 +10,15 @@ import { mitralS3HolosysMurmurRhythm } from "./S3&HolosysMurmur.js";
 import { mitralHolosystolicMurmurRhythm } from "./HolosystolicMurmur.js";
 import { mitralS3GallopRhythm } from "./S3Gallop.js";
 import { mitralS4GallopRhythm } from "./S4Gallop.js";
+import { AuscultationRhythms } from "../Rhythm.js";
 
-export const mitralRhythms = [
-    mitralNormalS1S2Rhythm,
-    mitralS3GallopRhythm,
-    mitralS4GallopRhythm,
-    mitralMidSystolicClickRhythm,
-    mitralEarlySystolicMurmurRhythm,
-    mitralMidSystolicMurmurRhythm,
-    mitralLateSystolicMurmurRhythm,
-    mitralClickLateSystolicMurmurRhythm,
-  // mitralOpeningSnapAndDiastolicMurmurRhythm,
-  // mitralS4MidSysRhythm,
-  // mitralS3HolosysMurmurRhythm,
-  // mitralHolosystolicMurmurRhythm,
-];
+export const mitralRhythms: AuscultationRhythms = {
+    NormalS1S2: mitralNormalS1S2Rhythm,
+    S3Gallop: mitralS3GallopRhythm,
+    S4Gallop: mitralS4GallopRhythm,
+    MidSystolicClick: mitralMidSystolicClickRhythm,
+    EarlySystolicMurmur: mitralEarlySystolicMurmurRhythm,
+    MidSystolicMurmur: mitralMidSystolicMurmurRhythm,
+    LateSystolicMurmur: mitralLateSystolicMurmurRhythm,
+    ClickLateSystolicMurmur: mitralClickLateSystolicMurmurRhythm,
+};

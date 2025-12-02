@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { HeartController } from './HeartController.js';
-import { rhythmGroups } from './RhythmOptions.js';
+import { AuscultationLocation, availableRhythms, Rhythm, SelectableRhythm, SelectableRhythmName } from './heartRhythms/Rhythm.js';
 
 // Global variables 
 let scene: THREE.Scene;
@@ -96,7 +96,7 @@ export function init(): void {
     // Start animation loop
     animate();
 
-    selectAuscultationPoint('aortic');
+    selectAuscultationPoint('Aortic');
     
     // Handle window resize
     window.addEventListener('resize', onWindowResize);
@@ -376,14 +376,11 @@ function setHeartBPM(bpm: number): void {
     heartController.setBPM(bpm);
 }
 
-// Auscultation point type
-type AuscultationPoint = 'aortic' | 'pulmonic' | 'tricuspid' | 'mitral';
-
 // Current selected auscultation point
-let currentAuscultationPoint: AuscultationPoint | null = 'aortic';
+let currentAuscultationPoint: AuscultationLocation | null = 'Aortic';
 
 // Callback function for auscultation point selection
-let auscultationCallback: ((point: AuscultationPoint) => void) | null = null;
+let auscultationCallback: ((point: AuscultationLocation) => void) | null = null;
 
 // Make functions globally accessible for HTML buttons
 declare global {
@@ -396,33 +393,26 @@ declare global {
         heartController: HeartController;
         morphTargetMeshes: THREE.Mesh[];
         heartMorphTargets: any;
-        switchHeartRhythm: (rhythmName: string) => void;
+        switchHeartRhythm: (rhythm: SelectableRhythm) => void;
         setHeartSoundVolume: (volume: number) => void;
         toggleHeartSoundVariations: () => void;
         getAvailableHeartRhythms: () => string[];
         toggleMode: () => void;
         toggleAuscultationPanel: () => void;
-        selectAuscultationPoint: (point: string) => void;
-        setAuscultationCallback: (callback: (point: AuscultationPoint) => void) => void;
-        getCurrentAuscultationPoint: () => AuscultationPoint | null;
+        selectAuscultationPoint: (point: AuscultationLocation) => void;
+        setAuscultationCallback: (callback: (point: AuscultationLocation) => void) => void;
+        getCurrentAuscultationPoint: () => AuscultationLocation | null;
     }
 }
 
 // Heart rhythm control functions
-function switchHeartRhythm(rhythmName: string): void {
-    const success = heartController.switchToRhythmByName(rhythmName);
-    if (success) {
-        // console.log(`Switched to heart rhythm: ${rhythmName}`);
-    }
+function switchHeartRhythm(rhythm: SelectableRhythm): void {
+    heartController.switchToRhythm(rhythm);
 }
 
 function setHeartSoundVolume(volume: number): void {
     heartController.setSoundVolume(volume);
     // console.log(`Heart sound volume set to: ${(volume * 100).toFixed(0)}%`);
-}
-
-function getAvailableHeartRhythms(): string[] {
-    return heartController.getAvailableRhythms().map(rhythm => rhythm.name);
 }
 
 function toggleMode(): void {
@@ -450,24 +440,21 @@ function toggleAuscultationPanel(): void {
     }
 }
 
-function selectAuscultationPoint(point: string): void {
-    updateRhythmOptions(point);
-    const validPoints: AuscultationPoint[] = ['aortic', 'pulmonic', 'tricuspid', 'mitral'];
-    
-    if (!validPoints.includes(point as AuscultationPoint)) {
+function selectAuscultationPoint(point: AuscultationLocation): void {
+    const validPoints: AuscultationLocation[] = ['Aortic', 'Pulmonic', 'Tricuspid', 'Mitral'];
+
+    if (!validPoints.includes(point as AuscultationLocation)) {
         console.error(`Invalid auscultation point: ${point}`);
         return;
     }
     
-    const auscultationPoint = point as AuscultationPoint;
-    currentAuscultationPoint = auscultationPoint;
-    
+
+    currentAuscultationPoint = point;
     // Update UI to show selected point
     const currentPointElement = document.getElementById('currentPoint');
     if (currentPointElement) {
         currentPointElement.textContent = point.charAt(0).toUpperCase() + point.slice(1);
     }
-
     const auscultationButton = document.getElementById('auscultation-btn') as HTMLButtonElement;
     if (auscultationButton) {
         const iconSpan = auscultationButton.querySelector('.icon') as HTMLElement;
@@ -481,69 +468,28 @@ function selectAuscultationPoint(point: string): void {
     allPoints.forEach(p => p.classList.remove('active'));
     
     // Add active class to selected point
-    const selectedPoint = document.querySelector(`.auscultation-point.${point}`);
+    const selectedPoint = document.querySelector(`.auscultation-point.${point.toLowerCase()}`);
     if (selectedPoint) {
         selectedPoint.classList.add('active');
     }
     
-    const normalRhythmValue = `${point.charAt(0).toUpperCase() + point.slice(1)} Normal S1 S2`;
-
     // Automatically switch to appropriate rhythm based on auscultation point
-    switchRhythmForAuscultationPoint(auscultationPoint);
-    heartController.switchToRhythmByName(normalRhythmValue);
+    heartController.setAuscultationLocation(point);
     // Call the callback if one is registered
     if (auscultationCallback) {
-        auscultationCallback(auscultationPoint);
+        auscultationCallback(point);
     }
     
     // console.log(`Selected auscultation point: ${auscultationPoint}`);
 }
 
-function switchRhythmForAuscultationPoint(point: AuscultationPoint): void {
-    // Map auscultation points to default rhythms
-    const rhythmMap: Record<AuscultationPoint, string> = {
-        'aortic': 'Normal S1 S2',
-        'pulmonic': 'Normal S1 S2',
-        'tricuspid': 'Normal S1 S2',
-        'mitral': 'Normal S1 S2'
-    };
-    
-    const rhythmName = rhythmMap[point];
-    
-    // Update the rhythm select dropdown
-    const rhythmSelect = document.getElementById('rhythmSelect') as HTMLSelectElement;
-    if (rhythmSelect) {
-        rhythmSelect.value = rhythmName;
-    }
-    
-    // Switch to the rhythm
-    heartController.switchToRhythmByName(rhythmName);
-}
-
-function setAuscultationCallback(callback: (point: AuscultationPoint) => void): void {
+function setAuscultationCallback(callback: (point: AuscultationLocation) => void): void {
     auscultationCallback = callback;
 }
 
-function getCurrentAuscultationPoint(): AuscultationPoint | null {
+function getCurrentAuscultationPoint(): AuscultationLocation | null {
     return currentAuscultationPoint;
 }
-
-function updateRhythmOptions(point: string): void {
-    // Clear current options
-    rhythmSelect.innerHTML = '';
-
-    // Get rhythms for selected point
-    const options = rhythmGroups[point] || [];
-
-    // Add new options
-    options.forEach(opt => {
-        const optionEl = document.createElement('option');
-        optionEl.value = opt.value;
-        optionEl.textContent = opt.label;
-        rhythmSelect.appendChild(optionEl);
-    });
-}
-
 
 window.resetCamera = resetCamera;
 window.toggleAnimation = toggleAnimation;
@@ -551,11 +497,10 @@ window.setHeartCycleDuration = setHeartCycleDuration;
 window.setHeartBPM = setHeartBPM;
 window.updateBlendshapes = (blendshapes: any) => heartController.applyExternalBlendshapes(blendshapes);
 window.heartController = heartController;
-window.switchHeartRhythm = switchHeartRhythm;
+window.selectAuscultationPoint = selectAuscultationPoint;
 window.setHeartSoundVolume = setHeartSoundVolume;
-window.getAvailableHeartRhythms = getAvailableHeartRhythms;
 window.toggleMode = toggleMode;
 window.toggleAuscultationPanel = toggleAuscultationPanel;
-window.selectAuscultationPoint = selectAuscultationPoint;
 window.setAuscultationCallback = setAuscultationCallback;
 window.getCurrentAuscultationPoint = getCurrentAuscultationPoint;
+window.switchHeartRhythm = switchHeartRhythm;

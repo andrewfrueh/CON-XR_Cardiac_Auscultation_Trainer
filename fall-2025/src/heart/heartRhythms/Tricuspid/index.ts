@@ -1,3 +1,4 @@
+import { AuscultationRhythms } from "../Rhythm.js"
 import {tricuspidClickLateSystolicMurmurRhythm} from "./Click-Late-SystolicMurmur.js"
 import {tricuspidEarlySystolicMurmurRhythm} from "./EarlySystolicMurmur.js"
 import {tricuspidLateSystolicMurmurRhythm} from "./LateSystolicMurmur.js"
@@ -7,13 +8,13 @@ import {tricuspidNormalS1S2Rhythm} from "./NormalS1S2.js"
 import {tricuspidS3GallopRhythm} from "./S3Gallop.js"
 import {tricuspidS4GallopRhythm} from "./S4Gallop.js"
 
-export const tricuspidRhythms = [
-    tricuspidNormalS1S2Rhythm,
-    tricuspidS3GallopRhythm,
-    tricuspidS4GallopRhythm,
-    tricuspidMidSystolicClickRhythm,
-    tricuspidEarlySystolicMurmurRhythm,
-    tricuspidMidSystolicMurmurRhythm,
-    tricuspidLateSystolicMurmurRhythm,
-    tricuspidClickLateSystolicMurmurRhythm,
-];
+export const tricuspidRhythms: AuscultationRhythms = {
+    NormalS1S2: tricuspidNormalS1S2Rhythm,
+    S3Gallop: tricuspidS3GallopRhythm,
+    S4Gallop: tricuspidS4GallopRhythm,
+    MidSystolicClick: tricuspidMidSystolicClickRhythm,
+    EarlySystolicMurmur: tricuspidEarlySystolicMurmurRhythm,
+    MidSystolicMurmur: tricuspidMidSystolicMurmurRhythm,
+    LateSystolicMurmur: tricuspidLateSystolicMurmurRhythm,
+    ClickLateSystolicMurmur: tricuspidClickLateSystolicMurmurRhythm,
+};
