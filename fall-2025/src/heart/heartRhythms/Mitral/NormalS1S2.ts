@@ -3,7 +3,6 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Normal S1 S2 - Normal
 export const mitralNormalS1S2Rhythm: Rhythm = {
-  name: "Normal S1 S2",
   location: "Mitral",
   sound: [
     // S1 sound

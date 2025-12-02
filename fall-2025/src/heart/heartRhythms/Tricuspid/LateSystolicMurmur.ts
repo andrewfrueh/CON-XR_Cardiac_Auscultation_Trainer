@@ -3,7 +3,6 @@ import { Rhythm } from "../Rhythm.js";
 
 // Apex, Supine, Bell - Late Systolic Murmur - Mitral Regurg due to MVP
 export const tricuspidLateSystolicMurmurRhythm: Rhythm = {
-    name: "Late Systolic Murmur",
     location: "Tricuspid",
     sound: [
         // S1 sound

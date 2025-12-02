@@ -3,7 +3,6 @@ import { Rhythm } from "../Rhythm.js";
 
 // Aortic, Supine, Bell - Mid-Systolic Click - Mitral Valve Prolapse (MVP)
 export const aorticMidSystolicClickRhythm: Rhythm = {
-    name: "Mid-Systolic Click",
     location: "Aortic",
     sound: [
         // S1 sound from aortic location

@@ -2,7 +2,6 @@ import { MotionCurves } from "../../../utils/curves.js";
 import { Rhythm } from "../Rhythm.js";
 
 export const pulmonicMidSystolicClickRhythm: Rhythm = {
-    name: "Mid-Systolic Click",
     location: "Pulmonic",
     sound: [
         {

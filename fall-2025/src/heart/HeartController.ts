@@ -181,7 +181,7 @@ export class HeartController {
      * Get current rhythm name
      */
     public getCurrentRhythmName(): string {
-        return this.rhythm.name;
+        return this.rythmSelectableName;
     }
     
     /**
