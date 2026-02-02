@@ -1,9 +1,8 @@
 // Initially created with Cursor using claude-4-sonnet
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { HeartController } from './HeartController.js';
-import { AuscultationLocation, availableRhythms, Rhythm, SelectableRhythm, SelectableRhythmName } from './heartRhythms/Rhythm.js';
+import type { AuscultationLocation, availableRhythms, Rhythm, SelectableRhythm, SelectableRhythmName } from './heartRhythms/Rhythm.js';
+import { FBXLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
 
 // Global variables 
 let scene: THREE.Scene;

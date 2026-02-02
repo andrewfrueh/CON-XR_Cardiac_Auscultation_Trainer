@@ -56,6 +56,7 @@ body {
     overflow: hidden;
     height: 100vh;
     background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-gradient) 100%);
+    /* background-color: red; */
     color: var(--color-text);
 }
 
@@ -117,4 +118,3 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
-

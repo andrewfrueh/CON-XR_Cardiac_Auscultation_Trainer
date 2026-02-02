@@ -2,6 +2,10 @@
 
 Interactive 3D heart model built with Three.js and TypeScript, featuring a complete Docker-based development environment.
 
+## TODO
+- Update tsconfig ES target from 2020 to 2022
+- Unpack assets to the root of public
+
 ## Features
 
 - **3D Heart Model**: Realistic heart shape with anatomical details including chambers and veins
@@ -99,7 +103,7 @@ The project uses Docker for a consistent development environment:
 - **Package Manager**: Yarn with lockfile support
 - **Build System**: TypeScript compiler with watch mode
 - **Dev Server**: http-server with CORS support
-- **Port Mapping**: 3000 (main app), 8080 (backup)
+- **Port Mapping**: 3000 (main app)
 
 ## Browser Compatibility
 

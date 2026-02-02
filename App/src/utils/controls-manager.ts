@@ -7,7 +7,7 @@ export function initializeControls(): void {
     // Make toggle function available globally
     (window as any).toggleControls = toggleControls;
     
-    console.log('✅ Controls manager initialized');
+    console.log('✅ Controls manager initialized'); // i can tell ts was vibe coded lmao
 }
 
 function toggleControls(): void {
