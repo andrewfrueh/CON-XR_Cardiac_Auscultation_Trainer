@@ -1,6 +1,9 @@
+# Macs
+.DS_Store
+
 */node_modules/
 */docs
- 
+
 # Blender >> 
 # Backup file, auto-generated
 *.blend1
