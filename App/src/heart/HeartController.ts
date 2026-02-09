@@ -250,7 +250,7 @@ export class HeartController implements ISoundEmitter {
    * Process a sound keyframe
    */
   private processSoundKeyframe(keyframe: SoundKeyframe): void {
-    const { time, soundPath, volume, pitch } = keyframe;
+    const { time, soundPath, volume, pitch, envelope } = keyframe;
     const timing = TimingController.getInstance();
 
     const currentCycle = timing.getCurrentCycle();
@@ -263,7 +263,11 @@ export class HeartController implements ISoundEmitter {
     ) {
       const lastPlayed = this.lastPlayedSounds.get(soundPath) || -1;
       if (lastPlayed < currentCycle) {
-        AudioEngine.getInstance().playSound(soundPath, { volume, pitch });
+        AudioEngine.getInstance().playSound(soundPath, {
+          volume,
+          pitch,
+          envelope,
+        });
         this.lastPlayedSounds.set(soundPath, currentCycle);
       }
     }

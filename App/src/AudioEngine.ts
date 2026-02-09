@@ -1,4 +1,23 @@
 /**
+ * Murmur envelope configuration for gain automation + filtering
+ * Used to shape a single source file into different murmur variants
+ */
+export type MurmurEnvelope = {
+  /** Time in seconds to ramp from silence to peakGain */
+  attack: number;
+  /** Time in seconds to hold at peakGain */
+  sustain: number;
+  /** Time in seconds to ramp from peakGain to silence */
+  decay: number;
+  /** Peak gain multiplier (0.0 - 1.0+) */
+  peakGain: number;
+  /** High-pass filter frequency in Hz (removes low rumble) */
+  hpFreq?: number;
+  /** Low-pass filter frequency in Hz (removes high hiss) */
+  lpFreq?: number;
+};
+
+/**
  * AudioEngine - Singleton class for managing audio playback
  * Handles AudioContext initialization, buffer loading/caching, and sound playback
  */
@@ -74,7 +93,7 @@ export class AudioEngine {
    */
   public async playSound(
     path: string,
-    options?: { volume?: number; pitch?: number },
+    options?: { volume?: number; pitch?: number; envelope?: MurmurEnvelope },
   ): Promise<void> {
     if (!this.audioContext) {
       console.warn("Audio context not available");
@@ -92,21 +111,78 @@ export class AudioEngine {
         }
       }
 
-      // Create and configure audio nodes
+      // Create source
       const source = this.audioContext.createBufferSource();
-      const gainNode = this.audioContext.createGain();
-
-      // Set volume (keyframe volume * global volume)
-      gainNode.gain.value = (options?.volume ?? 1) * this.globalVolume;
-
-      // Set pitch/playback rate
+      source.buffer = buffer;
       source.playbackRate.value = options?.pitch ?? 1;
 
-      // Connect audio graph: source -> gain -> destination
-      source.buffer = buffer;
-      source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
-      source.start();
+      const baseVolume = (options?.volume ?? 1) * this.globalVolume;
+
+      if (options?.envelope) {
+        // ---- Envelope-based playback (murmur modulation) ----
+        const env = options.envelope;
+        const now = this.audioContext.currentTime;
+        const totalDur = env.attack + env.sustain + env.decay;
+
+        // Build chain: source → highpass → lowpass → envelope gain → destination
+        let lastNode: AudioNode = source;
+
+        // High-pass filter
+        if (env.hpFreq && env.hpFreq > 20) {
+          const hp = this.audioContext.createBiquadFilter();
+          hp.type = "highpass";
+          hp.frequency.value = env.hpFreq;
+          hp.Q.value = 0.7;
+          lastNode.connect(hp);
+          lastNode = hp;
+        }
+
+        // Low-pass filter
+        if (env.lpFreq && env.lpFreq < 20000) {
+          const lp = this.audioContext.createBiquadFilter();
+          lp.type = "lowpass";
+          lp.frequency.value = env.lpFreq;
+          lp.Q.value = 0.7;
+          lastNode.connect(lp);
+          lastNode = lp;
+        }
+
+        // Gain envelope (attack → sustain → decay)
+        const envGain = this.audioContext.createGain();
+        envGain.gain.setValueAtTime(0.001, now);
+
+        if (env.attack > 0) {
+          envGain.gain.linearRampToValueAtTime(
+            env.peakGain * baseVolume,
+            now + env.attack,
+          );
+        } else {
+          envGain.gain.setValueAtTime(env.peakGain * baseVolume, now);
+        }
+
+        // Hold at peak through sustain
+        envGain.gain.setValueAtTime(
+          env.peakGain * baseVolume,
+          now + env.attack + env.sustain,
+        );
+
+        // Decay to silence
+        envGain.gain.linearRampToValueAtTime(0.001, now + totalDur);
+
+        lastNode.connect(envGain);
+        envGain.connect(this.audioContext.destination);
+
+        source.start(now);
+        source.stop(now + totalDur + 0.05);
+      } else {
+        // ---- Standard playback (no envelope) ----
+        const gainNode = this.audioContext.createGain();
+        gainNode.gain.value = baseVolume;
+
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        source.start();
+      }
     } catch (error) {
       console.warn(`Failed to play sound ${path}:`, error);
     }

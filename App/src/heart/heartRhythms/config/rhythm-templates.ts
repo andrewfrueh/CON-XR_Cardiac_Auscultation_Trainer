@@ -12,11 +12,11 @@ export type SoundKey =
   | "S3"
   | "S4"
   | "Click"
-  | "EarlySystolicMurmur"
-  | "MidSystolicMurmur"
-  | "LateSystolicMurmur"
+  | "SystolicMurmur"
   | "HolosystolicMurmur"
   | "EarlyDiastolicMurmur";
+
+import { MurmurEnvelope } from "../../../AudioEngine.js";
 
 /**
  * Sound event in a rhythm template
@@ -26,6 +26,8 @@ export type TemplateSoundEvent = {
   soundKey: SoundKey;
   /** Optional volume multiplier for this specific sound in the template */
   volumeMultiplier?: number;
+  /** Optional envelope for gain automation + filtering (murmur modulation) */
+  envelope?: MurmurEnvelope;
 };
 
 /**
@@ -60,7 +62,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     sounds: [
       { time: 0.32, soundKey: "S1" },
       { time: 0.62, soundKey: "S2" },
-      { time: 0.72, soundKey: "S3", volumeMultiplier: 1.5 },
+      { time: 0.72, soundKey: "S3", volumeMultiplier: 2 },
     ],
   },
 
@@ -92,7 +94,18 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     description: "Acute mitral regurgitation",
     sounds: [
       { time: 0.32, soundKey: "S1" },
-      { time: 0.34, soundKey: "EarlySystolicMurmur" },
+      {
+        time: 0.34,
+        soundKey: "SystolicMurmur",
+        envelope: {
+          attack: 0.0, // Instant onset (decrescendo shape)
+          sustain: 0.1,
+          decay: 0.2,
+          peakGain: 0.3,
+          hpFreq: 80,
+          lpFreq: 4000,
+        },
+      },
       { time: 0.62, soundKey: "S2" },
     ],
   },
@@ -103,7 +116,18 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     description: "Mitral regurgitation due to CAD",
     sounds: [
       { time: 0.32, soundKey: "S1" },
-      { time: 0.4, soundKey: "MidSystolicMurmur" },
+      {
+        time: 0.4,
+        soundKey: "SystolicMurmur",
+        envelope: {
+          attack: 0.08, // Diamond shape (crescendo-decrescendo)
+          sustain: 0.25,
+          decay: 0.15,
+          peakGain: 0.9,
+          hpFreq: 120,
+          lpFreq: 3500,
+        },
+      },
       { time: 0.62, soundKey: "S2" },
     ],
   },
@@ -114,7 +138,18 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     description: "Mitral regurgitation due to MVP",
     sounds: [
       { time: 0.32, soundKey: "S1" },
-      { time: 0.53, soundKey: "LateSystolicMurmur" },
+      {
+        time: 0.53,
+        soundKey: "SystolicMurmur",
+        envelope: {
+          attack: 0.25, // Crescendo shape (slow fade-in, sharp cutoff)
+          sustain: 0.15,
+          decay: 0.05,
+          peakGain: 0.85,
+          hpFreq: 200,
+          lpFreq: 3000,
+        },
+      },
       { time: 0.62, soundKey: "S2" },
     ],
   },
@@ -126,7 +161,18 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     sounds: [
       { time: 0.32, soundKey: "S1" },
       { time: 0.5, soundKey: "Click" },
-      { time: 0.53, soundKey: "LateSystolicMurmur" },
+      {
+        time: 0.53,
+        soundKey: "SystolicMurmur",
+        envelope: {
+          attack: 0.25, // Same crescendo profile as LateSystolicMurmur
+          sustain: 0.15,
+          decay: 0.05,
+          peakGain: 0.85,
+          hpFreq: 200,
+          lpFreq: 3000,
+        },
+      },
       { time: 0.62, soundKey: "S2" },
     ],
   },

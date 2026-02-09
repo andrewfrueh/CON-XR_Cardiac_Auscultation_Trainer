@@ -11,6 +11,7 @@ import {
   getAllRhythmDisplayNames,
   RhythmName,
 } from "./config/index.js";
+import { MurmurEnvelope } from "../../AudioEngine.js";
 
 // ============ Core Types ============
 
@@ -27,6 +28,8 @@ export type SoundKeyframe = {
   soundPath: string;
   volume?: number;
   pitch?: number;
+  /** Optional envelope for gain automation + filtering (murmur modulation) */
+  envelope?: MurmurEnvelope;
 };
 
 export type AuscultationLocation =
@@ -84,3 +87,5 @@ export {
   getAvailableRhythmNames,
   type RhythmName,
 } from "./config/index.js";
+
+export type { MurmurEnvelope } from "../../AudioEngine.js";

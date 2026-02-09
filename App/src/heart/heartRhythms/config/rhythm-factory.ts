@@ -51,12 +51,19 @@ export function createRhythm(
       pitch = override.pitch;
     }
 
-    sounds.push({
+    const keyframe: SoundKeyframe = {
       time: event.time,
       soundPath,
       volume,
       pitch,
-    });
+    };
+
+    // Pass envelope through for murmur modulation
+    if (event.envelope) {
+      keyframe.envelope = event.envelope;
+    }
+
+    sounds.push(keyframe);
   }
 
   return {
