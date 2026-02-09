@@ -1,20 +1,51 @@
-import { mitralRhythms } from "./heartRhythms/Mitral/index.js";
-import { aorticRhythms } from "./heartRhythms/Aortic/index.js";
-import { pulmonicRhythms } from "./heartRhythms/Pulmonic/index.js";
-import { tricuspidRhythms } from "./heartRhythms/Tricuspid/index.js";
+/**
+ * RhythmOptions - UI helper types for rhythm selection
+ */
+
+import {
+  availableRhythms,
+  SelectableRhythmName,
+  AuscultationLocation,
+  SelectableRhythm,
+} from "./heartRhythms/Rhythm.js";
 
 export interface RhythmOption {
-    value: string;  
-    label: string;  
+  value: string;
+  label: string;
 }
 
 export interface RhythmGroups {
-    [location: string]: RhythmOption[];
+  [location: string]: RhythmOption[];
 }
 
-// export const rhythmGroups: RhythmGroups = {
-//     mitral: mitralRhythms.map(rhythm => ({ value: rhythm.name, label: rhythm.name })),
-//     aortic: aorticRhythms.map(rhythm => ({ value: rhythm.name, label: rhythm.name })),
-//     pulmonic: pulmonicRhythms.map(rhythm => ({ value: rhythm.name, label: rhythm.name })),
-//     tricuspid: tricuspidRhythms.map(rhythm => ({ value: rhythm.name, label: rhythm.name })),
-// }
+/**
+ * Get rhythm options for a specific location
+ */
+export function getRhythmOptionsForLocation(
+  location: AuscultationLocation,
+): RhythmOption[] {
+  const rhythms = availableRhythms[location];
+  return Object.keys(rhythms).map((rhythmName) => ({
+    value: rhythmName,
+    label: SelectableRhythmName[rhythmName as SelectableRhythm],
+  }));
+}
+
+/**
+ * Get all rhythm options grouped by location
+ */
+export function getAllRhythmGroups(): RhythmGroups {
+  const locations: AuscultationLocation[] = [
+    "Aortic",
+    "Pulmonic",
+    "Tricuspid",
+    "Mitral",
+  ];
+  const groups: RhythmGroups = {};
+
+  for (const location of locations) {
+    groups[location] = getRhythmOptionsForLocation(location);
+  }
+
+  return groups;
+}
