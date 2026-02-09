@@ -1,54 +1,86 @@
+/**
+ * Rhythm Types and Configuration
+ *
+ * This file defines the core types for heart rhythms and exports the
+ * data-driven rhythm configuration system.
+ */
+
 import { CurveFunction } from "../../utils/curves.js";
-import { aorticNormalS1S2Rhythm } from "./Aortic/NormalS1S2.js";
-import {aorticRhythms} from "./Aortic/index.js";
-import {mitralRhythms} from "./Mitral/index.js";
-import {pulmonicRhythms} from "./Pulmonic/index.js";
-import {tricuspidRhythms} from "./Tricuspid/index.js";
+import {
+  createAllRhythms,
+  getAllRhythmDisplayNames,
+  RhythmName,
+} from "./config/index.js";
+
+// ============ Core Types ============
 
 export type AnimationKeyframe = {
-	time: number;
-	animationEnd: number;
-	blendshape: ("LA" | "RA" | "LV" | "RV")[];
-	value: number;
-	curveFunction: CurveFunction;
-}
+  time: number;
+  animationEnd: number;
+  blendshape: ("LA" | "RA" | "LV" | "RV")[];
+  value: number;
+  curveFunction: CurveFunction;
+};
 
 export type SoundKeyframe = {
-	time: number;
-	soundPath: string;
-	volume?: number;
-	pitch?: number;
+  time: number;
+  soundPath: string;
+  volume?: number;
+  pitch?: number;
 };
 
-export type AuscultationLocation = "Aortic" | "Pulmonic" | "Tricuspid" | "Mitral";
+export type AuscultationLocation =
+  | "Aortic"
+  | "Pulmonic"
+  | "Tricuspid"
+  | "Mitral";
 
 export type Rhythm = {
-	animation?: AnimationKeyframe[];
-	sound?: SoundKeyframe[];
-	location: AuscultationLocation;
+  animation?: AnimationKeyframe[];
+  sound?: SoundKeyframe[];
+  location: AuscultationLocation;
 };
 
-export const defaultRhythm = aorticNormalS1S2Rhythm;
+// ============ Rhythm Names ============
 
-export type SelectableRhythm = "ClickLateSystolicMurmur" | "EarlySystolicMurmur" | "LateSystolicMurmur" | "MidSystolicClick" | "MidSystolicMurmur" | "NormalS1S2" | "S3Gallop" | "S4Gallop";
-export const SelectableRhythmName: Record<SelectableRhythm, string> = {
-	ClickLateSystolicMurmur: "Click w/ Late Systolic Murmur",
-	EarlySystolicMurmur: "Early Systolic Murmur",
-	LateSystolicMurmur: "Late Systolic Murmur",
-	MidSystolicClick: "Mid Systolic Click",
-	MidSystolicMurmur: "Mid Systolic Murmur",
-	NormalS1S2: "Normal S1 S2",
-	S3Gallop: "S3 Gallop",
-	S4Gallop: "S4 Gallop",
-}
+/**
+ * All selectable rhythm types
+ * To add a new rhythm: add it to rhythm-templates.ts, it will automatically
+ * be available for all locations.
+ */
+export type SelectableRhythm = RhythmName;
+
+/**
+ * Display names for rhythms (for UI)
+ */
+export const SelectableRhythmName: Record<SelectableRhythm, string> =
+  getAllRhythmDisplayNames();
+
+// ============ Rhythm Registry ============
 
 export type AuscultationRhythms = {
-	[key in SelectableRhythm]: Rhythm;
-}
-
-export const availableRhythms: Record<AuscultationLocation, AuscultationRhythms> = {
-    Aortic: aorticRhythms,
-    Pulmonic: pulmonicRhythms,
-    Tricuspid: tricuspidRhythms,
-    Mitral: mitralRhythms,
+  [key in SelectableRhythm]: Rhythm;
 };
+
+/**
+ * All available rhythms, organized by location
+ * Generated from templates + location modifiers
+ */
+export const availableRhythms: Record<
+  AuscultationLocation,
+  AuscultationRhythms
+> = createAllRhythms() as Record<AuscultationLocation, AuscultationRhythms>;
+
+/**
+ * Default rhythm (used as fallback)
+ */
+export const defaultRhythm: Rhythm = availableRhythms.Aortic.NormalS1S2;
+
+// ============ Re-exports ============
+
+export {
+  createRhythm,
+  getRhythmDisplayName,
+  getAvailableRhythmNames,
+  type RhythmName,
+} from "./config/index.js";
