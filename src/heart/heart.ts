@@ -1,13 +1,7 @@
 // Initially created with Cursor using claude-4-sonnet
 import * as THREE from "three";
 import { HeartController } from "./HeartController.js";
-import type {
-  AuscultationLocation,
-  availableRhythms,
-  Rhythm,
-  SelectableRhythm,
-  SelectableRhythmName,
-} from "./heartRhythms/Rhythm.js";
+import type { AuscultationLocation, availableRhythms, Rhythm, SelectableRhythm, SelectableRhythmName } from "./heartRhythms/Rhythm.js";
 import { FBXLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 // Global variables
@@ -23,9 +17,7 @@ let fbxLoader: FBXLoader;
 let textureLoader: THREE.TextureLoader;
 let heartTexture: THREE.Texture | null = null;
 let isDarkMode = true;
-const rhythmSelect = document.getElementById(
-  "rhythmSelect",
-) as HTMLSelectElement;
+const rhythmSelect = document.getElementById("rhythmSelect") as HTMLSelectElement;
 
 // Blendshapes/Morph targets variables for FBX
 let morphTargetMeshes: THREE.Mesh[] = [];
@@ -35,7 +27,7 @@ let root: THREE.Bone | null = null;
 let heartController: HeartController = HeartController.getInstance();
 
 // Initialize the 3D scene
-export function init(): void {
+export async function init(): Promise<void> {
   // Create scene
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x171717);
@@ -83,11 +75,9 @@ export function init(): void {
 
   // Initialize FBX loader and texture loader
   try {
+    await loadHeartTexture(); // wait till its done
     fbxLoader = new FBXLoader();
     textureLoader = new THREE.TextureLoader();
-
-    // Load the heart texture
-    loadHeartTexture();
   } catch (error) {
     console.error("Error initializing loaders:", error);
     return;
@@ -133,8 +123,7 @@ function initFBXBlendshapes(fbxObject: THREE.Group): void {
 
   // Store morph targets globally for access
   (window as any).morphTargetMeshes = morphTargetMeshes;
-  (window as any).updateBlendshapes = (blendshapes: any) =>
-    heartController.applyExternalBlendshapes(blendshapes);
+  (window as any).updateBlendshapes = (blendshapes: any) => heartController.applyExternalBlendshapes(blendshapes);
 }
 
 // Load the shape-keyed heart model and separate into top and bottom halves
@@ -164,11 +153,7 @@ function loadHeartModel(): void {
       heart.scale.setScalar(scale);
 
       // Center the heart
-      heart.position.set(
-        -center.x * scale,
-        -center.y * scale + 0.2,
-        -center.z * scale,
-      );
+      heart.position.set(-center.x * scale, -center.y * scale + 0.2, -center.z * scale);
 
       // Start heart controller animation
       heartController.start();
@@ -212,26 +197,11 @@ function loadHeartModel(): void {
 }
 
 // Load the heart texture
-function loadHeartTexture(): void {
-  textureLoader.load(
-    "./assets/corazon_atropellado.jpg",
-    function (texture: THREE.Texture) {
-      // Successfully loaded texture
-      heartTexture = texture;
-
-      // Configure texture properties
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.flipY = true; // Flip Y axis for proper FBX texture alignment
-    },
-    function (_progress: ProgressEvent<EventTarget>) {
-      // Loading progress - optional
-    },
-    function (error: unknown) {
-      console.error("Error loading heart texture:", error);
-      // Continue without texture - will use default material
-    },
-  );
+async function loadHeartTexture(): Promise<void> {
+  // to simulate delay
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+  const loader = new THREE.TextureLoader();
+  heartTexture = await loader.loadAsync("./assets/corazon_atropellado.jpg");
 }
 
 // Create a heart material with texture if available
@@ -242,17 +212,10 @@ function createHeartMaterial(): THREE.MeshPhongMaterial {
     side: THREE.DoubleSide, // Ensure both sides are visible
   };
 
-  if (heartTexture) {
-    // Use the loaded texture
-    materialConfig.map = heartTexture;
-    materialConfig.color = 0xffffff; // White to show texture colors properly
-    materialConfig.emissive = 0x221111; // Subtle red glow
-  } else {
-    // Fallback to solid red color
-    materialConfig.color = 0xff4466;
-    materialConfig.emissive = 0x882222;
-  }
-
+  // Use the loaded texture
+  materialConfig.map = heartTexture;
+  materialConfig.color = 0xffffff; // white to show texture colors properly
+  materialConfig.emissive = 0x221111; // subtle red glow
   return new THREE.MeshPhongMaterial(materialConfig);
 }
 
@@ -346,12 +309,8 @@ function toggleAnimation(): void {
   isAnimating = !isAnimating;
 
   // Update both play buttons (expanded and collapsed versions)
-  const btnExpanded = document.getElementById(
-    "playPauseBtn",
-  ) as HTMLButtonElement;
-  const btnCollapsed = document.getElementById(
-    "playPauseBtnCollapsed",
-  ) as HTMLButtonElement;
+  const btnExpanded = document.getElementById("playPauseBtn") as HTMLButtonElement;
+  const btnCollapsed = document.getElementById("playPauseBtnCollapsed") as HTMLButtonElement;
 
   const newIcon = isAnimating ? "⏸" : "▶";
   const newTitle = isAnimating ? "Pause" : "Play";
@@ -413,9 +372,7 @@ declare global {
     toggleMode: () => void;
     toggleAuscultationPanel: () => void;
     selectAuscultationPoint: (point: AuscultationLocation) => void;
-    setAuscultationCallback: (
-      callback: (point: AuscultationLocation) => void,
-    ) => void;
+    setAuscultationCallback: (callback: (point: AuscultationLocation) => void) => void;
     getCurrentAuscultationPoint: () => AuscultationLocation | null;
   }
 }
@@ -431,9 +388,7 @@ function setHeartSoundVolume(volume: number): void {
 }
 
 function toggleMode(): void {
-  const modeButton = document.getElementById(
-    "change-mode",
-  ) as HTMLButtonElement;
+  const modeButton = document.getElementById("change-mode") as HTMLButtonElement;
   const iconSpan = modeButton.querySelector(".icon") as HTMLElement;
 
   isDarkMode = !isDarkMode;
@@ -458,12 +413,7 @@ function toggleAuscultationPanel(): void {
 }
 
 function selectAuscultationPoint(point: AuscultationLocation): void {
-  const validPoints: AuscultationLocation[] = [
-    "Aortic",
-    "Pulmonic",
-    "Tricuspid",
-    "Mitral",
-  ];
+  const validPoints: AuscultationLocation[] = ["Aortic", "Pulmonic", "Tricuspid", "Mitral"];
 
   if (!validPoints.includes(point as AuscultationLocation)) {
     console.error(`Invalid auscultation point: ${point}`);
@@ -474,12 +424,9 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   // Update UI to show selected point
   const currentPointElement = document.getElementById("currentPoint");
   if (currentPointElement) {
-    currentPointElement.textContent =
-      point.charAt(0).toUpperCase() + point.slice(1);
+    currentPointElement.textContent = point.charAt(0).toUpperCase() + point.slice(1);
   }
-  const auscultationButton = document.getElementById(
-    "auscultation-btn",
-  ) as HTMLButtonElement;
+  const auscultationButton = document.getElementById("auscultation-btn") as HTMLButtonElement;
   if (auscultationButton) {
     const iconSpan = auscultationButton.querySelector(".icon") as HTMLElement;
     if (iconSpan) {
@@ -492,9 +439,7 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   allPoints.forEach((p) => p.classList.remove("active"));
 
   // Add active class to selected point
-  const selectedPoint = document.querySelector(
-    `.auscultation-point.${point.toLowerCase()}`,
-  );
+  const selectedPoint = document.querySelector(`.auscultation-point.${point.toLowerCase()}`);
   if (selectedPoint) {
     selectedPoint.classList.add("active");
   }
@@ -509,9 +454,7 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   // console.log(`Selected auscultation point: ${auscultationPoint}`);
 }
 
-function setAuscultationCallback(
-  callback: (point: AuscultationLocation) => void,
-): void {
+function setAuscultationCallback(callback: (point: AuscultationLocation) => void): void {
   auscultationCallback = callback;
 }
 
@@ -523,8 +466,7 @@ window.resetCamera = resetCamera;
 window.toggleAnimation = toggleAnimation;
 window.setHeartCycleDuration = setHeartCycleDuration;
 window.setHeartBPM = setHeartBPM;
-window.updateBlendshapes = (blendshapes: any) =>
-  heartController.applyExternalBlendshapes(blendshapes);
+window.updateBlendshapes = (blendshapes: any) => heartController.applyExternalBlendshapes(blendshapes);
 window.heartController = heartController;
 window.selectAuscultationPoint = selectAuscultationPoint;
 window.setHeartSoundVolume = setHeartSoundVolume;
