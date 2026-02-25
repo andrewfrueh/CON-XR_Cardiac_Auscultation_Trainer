@@ -261,14 +261,16 @@ export class HeartController implements ISoundEmitter {
       timing.getPrevTime() < beatTime &&
       timing.getCurrentTime() >= beatTime
     ) {
-      const lastPlayed = this.lastPlayedSounds.get(soundPath) || -1;
+      // Use soundPath + time as unique key to allow the same sound to play multiple times per cycle
+      const uniqueKey = `${soundPath}_${time}`;
+      const lastPlayed = this.lastPlayedSounds.get(uniqueKey) || -1;
       if (lastPlayed < currentCycle) {
         AudioEngine.getInstance().playSound(soundPath, {
           volume,
           pitch,
           envelope,
         });
-        this.lastPlayedSounds.set(soundPath, currentCycle);
+        this.lastPlayedSounds.set(uniqueKey, currentCycle);
       }
     }
   }

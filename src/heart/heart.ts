@@ -1,7 +1,7 @@
 // Initially created with Cursor using claude-4-sonnet
 import * as THREE from "three";
 import { HeartController } from "./HeartController.js";
-import type {
+import {
   AuscultationLocation,
   availableRhythms,
   Rhythm,
@@ -101,6 +101,16 @@ export function init(): void {
 
   // Start animation loop
   animate();
+
+  if (rhythmSelect) {
+    rhythmSelect.innerHTML = "";
+    Object.entries(SelectableRhythmName).forEach(([key, name]) => {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = name as string;
+      rhythmSelect.appendChild(option);
+    });
+  }
 
   selectAuscultationPoint("Aortic");
 
