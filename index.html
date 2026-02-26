@@ -78,10 +78,22 @@
           </button>
         </div>
 
-        <div class="control-group rhythm-control">
-          <label for="rhythmSelect">Rhythm:</label>
+        <div class="control-group rhythm-control custom-dropdown-container">
+          <label>Rhythm:</label>
+          <div class="custom-select-wrapper" id="customRhythmSelectWrapper">
+            <div class="custom-select-trigger" id="customRhythmTrigger">
+              <span id="customRhythmSelected">Select Rhythm...</span>
+              <svg class="custom-select-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+            <div class="custom-select-options-container">
+              <div class="custom-select-options" id="customRhythmOptions">
+                <!-- Options injected here -->
+              </div>
+            </div>
+          </div>
           <select
             id="rhythmSelect"
+            style="display: none;"
             onchange="switchHeartRhythm(this.value)"
           ></select>
         </div>
@@ -189,5 +201,66 @@
 
     <!-- Main application (includes controls manager) -->
     <script type="module" src="/src/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const nativeSelect = document.getElementById("rhythmSelect");
+        const trigger = document.getElementById("customRhythmTrigger");
+        const selectedText = document.getElementById("customRhythmSelected");
+        const optionsContainer = document.getElementById("customRhythmOptions");
+        const wrapper = document.getElementById("customRhythmSelectWrapper");
+
+        // Toggle dropdown
+        trigger.addEventListener("click", (e) => {
+          e.stopPropagation();
+          wrapper.classList.toggle("open");
+        });
+
+        // Close on outside click
+        document.addEventListener("click", () => {
+          wrapper.classList.remove("open");
+        });
+
+        // Observer to populate options when native select is updated
+        const observer = new MutationObserver(() => {
+          optionsContainer.innerHTML = "";
+          Array.from(nativeSelect.options).forEach((opt, index) => {
+            const optionDiv = document.createElement("div");
+            optionDiv.className = "custom-select-option";
+            optionDiv.textContent = opt.textContent;
+            optionDiv.dataset.value = opt.value;
+            
+            // Set initial selected
+            if (opt.selected || index === 0) {
+              if (index === 0 && !nativeSelect.value) {
+                nativeSelect.value = opt.value;
+              }
+              selectedText.textContent = opt.textContent;
+              optionDiv.classList.add("selected");
+            }
+
+            optionDiv.addEventListener("click", (e) => {
+              e.stopPropagation();
+              // Remove selected class from all options
+              document.querySelectorAll(".custom-select-option").forEach(el => el.classList.remove("selected"));
+              optionDiv.classList.add("selected");
+              
+              nativeSelect.value = opt.value;
+              selectedText.textContent = opt.textContent;
+              wrapper.classList.remove("open");
+              
+              if (typeof window.switchHeartRhythm === "function") {
+                window.switchHeartRhythm(opt.value);
+              }
+            });
+            optionsContainer.appendChild(optionDiv);
+          });
+        });
+
+        // Observe native select for child node modifications (options added)
+        if (nativeSelect) {
+          observer.observe(nativeSelect, { childList: true });
+        }
+      });
+    </script>
   </body>
 </html>
