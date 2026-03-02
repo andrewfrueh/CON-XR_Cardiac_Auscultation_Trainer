@@ -34,6 +34,21 @@ let root: THREE.Bone | null = null;
 // Heart controller singleton
 let heartController: HeartController = HeartController.getInstance();
 
+type ViewMode = "mannequin" | "heart";
+
+// View state (default mannequin)
+let currentView: ViewMode = "mannequin";
+
+// Group for mannequin (will be loaded)
+let mannequinGroup: THREE.Group;
+
+// If we hide the heart, remember whether it was animating so we can resume cleanly
+let wasHeartAnimatingBeforeHide = true;
+
+// Optional camera presets (tweak numbers after you see it)
+const heartCameraPos = new THREE.Vector3(0, 0, 6);
+const mannequinCameraPos = new THREE.Vector3(0, 0, 8);
+
 // Initialize the 3D scene
 export function init(): void {
   // Create scene
@@ -95,6 +110,20 @@ export function init(): void {
 
   // Add lighting
   addLighting();
+
+  // Create groups
+  heartGroup = new THREE.Group();
+  scene.add(heartGroup);
+
+  mannequinGroup = new THREE.Group();
+  scene.add(mannequinGroup);
+
+  // Default view on load
+  applyViewState(false);
+
+  // Load models
+  loadMannequinModel();  // mannequin should be default visible
+  loadHeartModel();      // heart starts hidden by default
 
   // Load the heart model
   loadHeartModel();
@@ -184,10 +213,6 @@ function loadHeartModel(): void {
         }
       });
 
-      // Create a group for the heart first
-      heartGroup = new THREE.Group();
-      scene.add(heartGroup);
-
       // Add the heart directly to the scene
       heartGroup.add(object);
 
@@ -209,6 +234,91 @@ function loadHeartModel(): void {
       }
     },
   );
+}
+
+function loadMannequinModel(): void {
+  fbxLoader.load(
+    "./public/assets/chest.fbx",
+    function (object: THREE.Group) {
+      // Basic shadows
+      object.traverse((child: THREE.Object3D) => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      // Scale/center similar to heart
+      const box = new THREE.Box3().setFromObject(object);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 6 / maxDim; // tweak if needed
+      object.scale.setScalar(scale);
+
+      object.position.set(
+        -center.x * scale,
+        -center.y * scale,
+        -center.z * scale
+      );
+
+      mannequinGroup.add(object);
+
+      // Make sure visibility matches currentView (in case load finishes later)
+      applyViewState(false);
+    },
+    undefined,
+    (error) => console.error("Error loading mannequin model:", error)
+  );
+}
+
+function applyViewState(updateCamera: boolean = true): void {
+  const showMannequin = currentView === "mannequin";
+  const showHeart = currentView === "heart";
+
+  if (mannequinGroup) mannequinGroup.visible = showMannequin;
+  if (heartGroup) heartGroup.visible = showHeart;
+
+  // Pause/resume heart animation appropriately
+  if (!showHeart) {
+    wasHeartAnimatingBeforeHide = isAnimating;
+    if (isAnimating) {
+      heartController.stop();
+    }
+  } else {
+    if (wasHeartAnimatingBeforeHide) {
+      heartController.start();
+    }
+  }
+
+  if (updateCamera) {
+    camera.position.copy(showHeart ? heartCameraPos : mannequinCameraPos);
+    if (controls) controls.update();
+  }
+}
+
+function toggleView(): void {
+  const toggleButton = document.getElementById(
+    "toggle-view"
+  ) as HTMLButtonElement;
+
+  const iconSpan = toggleButton?.querySelector(".icon") as HTMLElement;
+
+  // Flip state
+  currentView = currentView === "mannequin" ? "heart" : "mannequin";
+
+  // Apply scene visibility + camera logic
+  applyViewState(true);
+
+  // Update icon
+  if (iconSpan) {
+    if (currentView === "mannequin") {
+      iconSpan.textContent = "❤️"; // mannequin/chest icon
+    } else {
+      iconSpan.textContent = "👤"; // heart icon
+    }
+  }
 }
 
 // Load the heart texture
@@ -411,6 +521,7 @@ declare global {
     toggleHeartSoundVariations: () => void;
     getAvailableHeartRhythms: () => string[];
     toggleMode: () => void;
+    toggleView: () => void;
     toggleAuscultationPanel: () => void;
     selectAuscultationPoint: (point: AuscultationLocation) => void;
     setAuscultationCallback: (
@@ -533,3 +644,4 @@ window.toggleAuscultationPanel = toggleAuscultationPanel;
 window.setAuscultationCallback = setAuscultationCallback;
 window.getCurrentAuscultationPoint = getCurrentAuscultationPoint;
 window.switchHeartRhythm = switchHeartRhythm;
+window.toggleView = toggleView;
