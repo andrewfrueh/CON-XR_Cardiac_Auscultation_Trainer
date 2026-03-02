@@ -1,7 +1,13 @@
 // Initially created with Cursor using claude-4-sonnet
 import * as THREE from "three";
 import { HeartController } from "./HeartController.js";
-import type { AuscultationLocation, availableRhythms, Rhythm, SelectableRhythm, SelectableRhythmName } from "./heartRhythms/Rhythm.js";
+import {
+  AuscultationLocation,
+  availableRhythms,
+  Rhythm,
+  SelectableRhythm,
+  SelectableRhythmName,
+} from "./heartRhythms/Rhythm.js";
 import { FBXLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 // Global variables
@@ -91,6 +97,16 @@ export async function init(): Promise<void> {
 
   // Start animation loop
   animate();
+
+  if (rhythmSelect) {
+    rhythmSelect.innerHTML = "";
+    Object.entries(SelectableRhythmName).forEach(([key, name]) => {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = name as string;
+      rhythmSelect.appendChild(option);
+    });
+  }
 
   selectAuscultationPoint("Aortic");
 

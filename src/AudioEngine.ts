@@ -120,6 +120,8 @@ export class AudioEngine {
 
       if (options?.envelope) {
         // ---- Envelope-based playback (murmur modulation) ----
+        // Enable looping so short murmur samples can be sustained indefinitely by the envelope
+        source.loop = true;
         const env = options.envelope;
         const now = this.audioContext.currentTime;
         const totalDur = env.attack + env.sustain + env.decay;

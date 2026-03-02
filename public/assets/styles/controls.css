@@ -3,359 +3,477 @@
    =================================== */
 
 .controls {
-    position: fixed;
-    bottom: var(--spacing-md);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    align-items: center;
-    justify-content: center;
-    max-width: calc(100vw - 32px);
-    max-height: calc(100vh - 32px);
-    overflow-y: auto;
-    padding: var(--spacing-md);
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    user-select: none;
+  position: fixed;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  overflow: visible;
+  padding: var(--spacing-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  user-select: none;
 }
 
 /* Toggle Button */
 .toggle-btn {
-    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-    position: relative;
-    min-width: 44px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+  position: relative;
+  min-width: 44px;
 }
 
 .toggle-btn::after {
-    content: ' ▲';
-    display: inline;
-    transition: transform 0.3s ease;
-    font-size: 12px;
+  content: " ▲";
+  display: inline;
+  transition: transform 0.3s ease;
+  font-size: 12px;
 }
 
 .controls.expanded .toggle-btn::after {
-    content: ' ▼';
+  content: " ▼";
 }
 
 /* Buttons */
 .control-btn {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    border: none;
-    color: var(--color-text);
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    min-height: 44px;
-    white-space: nowrap;
-    /* width: 44px; */
-    height: 44px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border: none;
+  color: var(--color-text);
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  min-height: 44px;
+  white-space: nowrap;
+  /* width: 44px; */
+  height: 44px;
 }
 
 .control-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
 }
 
 .control-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 /* Play button for collapsed state (mobile only) */
 .play-btn-collapsed {
-    display: none; /* Hidden by default (desktop) */
+  display: none; /* Hidden by default (desktop) */
 }
 
 /* Icon Buttons */
 .icon-buttons {
-    display: flex;
-    gap: var(--spacing-sm);
-    align-items: center;
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
 }
 
 .icon-btn {
-    color: white;
-    min-width: 44px;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  color: white;
+  min-width: 44px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon-btn .icon {
-    font-size: 20px;
-    line-height: 1;
+  font-size: 20px;
+  line-height: 1;
 }
 
 /* Control Groups */
 .control-group {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: 8px 12px;
-    background: var(--control-group-bg);
-    border-radius: var(--radius);
-    border: 1px solid var(--glass-border);
-    min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 8px 12px;
+  background: var(--control-group-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-border);
+  min-height: 44px;
 }
 
 .control-group label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
-/* Select */
-.rhythm-control select {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--glass-border);
-    color: var(--color-text);
-    padding: 8px 32px 8px 12px;
-    border-radius: var(--radius);
-    font-size: 13px;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    min-width: 140px;
+/* Custom Select (Glassmorphic) */
+.custom-dropdown-container {
+  position: relative;
 }
 
-.rhythm-control select:focus {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+.custom-select-wrapper {
+  position: relative;
+  min-width: 180px;
 }
 
-.rhythm-control select option {
-    background: var(--control-group-bg);
-    color: var(--color-text);
+.custom-select-trigger {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  color: var(--color-text);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.custom-select-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.custom-select-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+}
+
+.custom-select-wrapper.open .custom-select-arrow {
+  transform: rotate(180deg);
+}
+
+.custom-select-wrapper.open .custom-select-trigger {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.custom-select-options-container {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.custom-select-wrapper.open .custom-select-options-container {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.custom-select-options {
+  background: rgba(30, 30, 30, 0.85); /* Dark base for options */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+/* For light mode */
+body.light-mode .custom-select-options {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.custom-select-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-select-options::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 3px;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5);
+}
+
+/* filter input styling */
+.custom-select-options #rhythmFilter {
+  width: calc(100% - 8px);
+  margin: 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+body.light-mode .custom-select-options #rhythmFilter {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.custom-select-option {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--color-text);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+}
+
+.custom-select-option:last-child {
+  margin-bottom: 0;
+}
+
+.custom-select-option:hover {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+.custom-select-option.selected {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 /* Sliders */
 .slider-control {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
 .slider-control input[type="range"] {
-    width: 100px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    outline: none;
-    cursor: pointer;
+  width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
 }
 
 .slider-control input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--color-primary);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
 }
 
 .slider-control input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: var(--color-primary);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
+  width: 16px;
+  height: 16px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
 }
 
 .slider-value {
-    font-size: 13px;
-    font-weight: 600;
-    min-width: 60px;
-    text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: right;
 }
 
 /* Mobile - Controls as overlay at bottom */
 @media (max-width: 768px) {
-    .controls {
-        position: fixed;
-        bottom: var(--spacing-md);
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto;
-        max-width: calc(100vw - 24px);
-        padding: var(--spacing-sm);
-    }
-    
-    /* Show collapsed play button when controls are collapsed */
-    .controls .play-btn-collapsed {
-        display: flex;
-    }
-    
-    .controls .icon-buttons,
-    .controls .control-group {
-        display: none;
-    }
-    
-    /* When manually expanded */
-    .controls.expanded .play-btn-collapsed {
-        display: none; /* Hide collapsed button when expanded */
-    }
-    
-    .controls.expanded .icon-buttons,
-    .controls.expanded .control-group {
-        display: flex;
-    }
-    
-    .controls.expanded {
-        flex-direction: column;
-        align-items: stretch;
-        overflow-y: auto;
-        padding: var(--spacing-sm);
-        gap: var(--spacing-sm);
-    }
-    
-    /* Icon buttons stay horizontal on mobile */
-    .controls.expanded .icon-buttons {
-        flex-direction: row;
-        justify-content: center;
-    }
-    
-    .controls.expanded .icon-btn {
-        /* flex: 0 0 auto; */
-        flex: 1;
-    }
-    
-    .controls.expanded .control-group {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        width: 100%;
-    }
-    
-    .controls.expanded .slider-control {
-        flex: 1;
-        min-width: 0;
-    }
-    
-    .controls.expanded .slider-control input[type="range"] {
-        flex: 1;
-    }
+  .controls {
+    position: fixed;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: calc(100vw - 24px);
+    padding: var(--spacing-sm);
+  }
+
+  /* Show collapsed play button when controls are collapsed */
+  .controls .play-btn-collapsed {
+    display: flex;
+  }
+
+  .controls .icon-buttons,
+  .controls .control-group {
+    display: none;
+  }
+
+  /* When manually expanded */
+  .controls.expanded .play-btn-collapsed {
+    display: none; /* Hide collapsed button when expanded */
+  }
+
+  .controls.expanded .icon-buttons,
+  .controls.expanded .control-group {
+    display: flex;
+  }
+
+  .controls.expanded {
+    flex-direction: column;
+    align-items: stretch;
+    overflow: visible;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  /* Icon buttons stay horizontal on mobile */
+  .controls.expanded .icon-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .controls.expanded .icon-btn {
+    /* flex: 0 0 auto; */
+    flex: 1;
+  }
+
+  .controls.expanded .control-group {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .controls.expanded .slider-control {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .controls.expanded .slider-control input[type="range"] {
+    flex: 1;
+  }
 }
 
 /* Small height (landscape mobile/tablet) - Compact overlay at bottom */
 @media (max-height: 600px) {
-    .controls {
-        position: fixed;
-        bottom: 4px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 4px var(--spacing-sm);
-        font-size: 12px;
-    }
-    
-    /* Show collapsed play button when controls are collapsed */
-    .controls .play-btn-collapsed {
-        display: flex;
-    }
-    
-    .controls .icon-buttons,
-    .controls .control-group {
-        display: none;
-    }
-    
-    /* When expanded */
-    .controls.expanded {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 6px 10px;
-        gap: 6px;
-        font-size: 12px;
-    }
-    
-    .controls.expanded .play-btn-collapsed {
-        display: none; /* Hide collapsed button when expanded */
-    }
-    
-    .controls.expanded .icon-buttons,
-    .controls.expanded .control-group {
-        display: flex;
-    }
-    
-    .controls.expanded .control-btn {
-        padding: 8px 12px;
-        font-size: 12px;
-        min-height: 36px;
-    }
-    
-    .controls.expanded .control-group {
-        padding: 6px 8px;
-        min-height: 36px;
-    }
-    
-    .controls.expanded .control-group label {
-        font-size: 11px;
-    }
-    
-    .controls.expanded .rhythm-control select {
-        font-size: 11px;
-        padding: 6px 24px 6px 8px;
-        min-width: 100px;
-    }
-    
-    .controls.expanded .slider-control input[type="range"] {
-        width: 60px;
-    }
-    
-    .controls.expanded .slider-value {
-        font-size: 11px;
-        min-width: 50px;
-    }
+  .controls {
+    position: fixed;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px var(--spacing-sm);
+    font-size: 12px;
+  }
+
+  /* Show collapsed play button when controls are collapsed */
+  .controls .play-btn-collapsed {
+    display: flex;
+  }
+
+  .controls .icon-buttons,
+  .controls .control-group {
+    display: none;
+  }
+
+  /* When expanded */
+  .controls.expanded {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 6px 10px;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .controls.expanded .play-btn-collapsed {
+    display: none; /* Hide collapsed button when expanded */
+  }
+
+  .controls.expanded .icon-buttons,
+  .controls.expanded .control-group {
+    display: flex;
+  }
+
+  .controls.expanded .control-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .controls.expanded .control-group {
+    padding: 6px 8px;
+    min-height: 36px;
+  }
+
+  .controls.expanded .control-group label {
+    font-size: 11px;
+  }
+
+  .controls.expanded .custom-select-trigger {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+  .custom-select-wrapper {
+    min-width: 120px;
+  }
+
+  .controls.expanded .slider-control input[type="range"] {
+    width: 60px;
+  }
+
+  .controls.expanded .slider-value {
+    font-size: 11px;
+    min-width: 50px;
+  }
 }
 
 /* Desktop - Always expanded, hide toggle button */
 @media (min-width: 769px) and (min-height: 601px) {
-    .controls {
-        position: relative;
-        bottom: 0;
-        left: 0;
-        transform: none;
-        width: 100%;
-        max-width: none;
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
-    }
-    
-    /* Hide toggle button and collapsed play button on desktop */
-    .toggle-btn,
-    .play-btn-collapsed {
-        display: none !important;
-    }
-    
-    /* Always show all controls on desktop */
-    .controls .icon-buttons,
-    .controls .control-group {
-        display: flex;
-    }
+  .controls {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  /* Hide toggle button and collapsed play button on desktop */
+  .toggle-btn,
+  .play-btn-collapsed {
+    display: none !important;
+  }
+
+  /* Always show all controls on desktop */
+  .controls .icon-buttons,
+  .controls .control-group {
+    display: flex;
+  }
 }
 
 /* Tablet */
 @media (min-width: 769px) and (max-width: 1024px) {
-    .controls {
-        max-width: 90vw;
-    }
+  .controls {
+    max-width: 90vw;
+  }
 }
 
 /* ===================================
@@ -363,202 +481,202 @@
    =================================== */
 
 .auscultation-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    z-index: 200;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    padding: var(--spacing-md);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    overflow-y: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 200;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  padding: var(--spacing-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  overflow-y: auto;
 }
 
 .auscultation-panel.active {
-    opacity: 1;
-    pointer-events: all;
-    transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: all;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .auscultation-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .auscultation-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--color-text);
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .close-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--glass-border);
-    color: var(--color-text);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  color: var(--color-text);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
 }
 
 .chest-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto var(--spacing-md);
-    aspect-ratio: 1;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto var(--spacing-md);
+  aspect-ratio: 1;
 }
 
 .chest-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: invert(1);
-    opacity: 0.8;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: invert(1);
+  opacity: 0.8;
 }
 
 .light-mode .chest-image {
-    filter: invert(0);
+  filter: invert(0);
 }
 
 .auscultation-points {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .auscultation-point {
-    position: absolute;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.3s ease;
+  position: absolute;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.3s ease;
 }
 
 .auscultation-point:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .auscultation-point.active .point-dot {
-    background: var(--color-accent);
-    box-shadow: 0 0 20px var(--color-accent);
-    transform: scale(1.3);
+  background: var(--color-accent);
+  box-shadow: 0 0 20px var(--color-accent);
+  transform: scale(1.3);
 }
 
 .point-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 /* Position each auscultation point */
 .auscultation-point.aortic {
-    top: 45%;
-    right: 52%;
+  top: 45%;
+  right: 52%;
 }
 
 .auscultation-point.pulmonic {
-    top: 45%;
-    left: 53%;
+  top: 45%;
+  left: 53%;
 }
 
 .auscultation-point.tricuspid {
-    top: 60%;
-    left: 53%;
+  top: 60%;
+  left: 53%;
 }
 
 .auscultation-point.mitral {
-    top: 72%;
-    left: 65%;
+  top: 72%;
+  left: 65%;
 }
 
 .selected-point-info {
-    text-align: center;
-    padding: var(--spacing-sm);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius);
-    border: 1px solid var(--glass-border);
+  text-align: center;
+  padding: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-border);
 }
 
 .selected-point-info p {
-    margin: 0;
-    font-size: 14px;
-    color: var(--color-text-muted);
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
 }
 
 .selected-point-info strong {
-    color: var(--color-primary);
-    font-weight: 600;
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    .auscultation-panel {
-        width: 95%;
-        max-height: 90vh;
-        padding: var(--spacing-sm);
-    }
-    
-    .chest-container {
-        max-width: 300px;
-    }
-    
-    .point-dot {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .point-label {
-        font-size: 11px;
-    }
+  .auscultation-panel {
+    width: 95%;
+    max-height: 90vh;
+    padding: var(--spacing-sm);
+  }
+
+  .chest-container {
+    max-width: 300px;
+  }
+
+  .point-dot {
+    width: 24px;
+    height: 24px;
+  }
+
+  .point-label {
+    font-size: 11px;
+  }
 }
 
 .aortic-group {
-    display: none;
+  display: none;
 }
 .apex-group {
-    display: block;
+  display: block;
 }
 .pulmonic-group {
-    display: none;
+  display: none;
 }
 
 .tricuspid-group {
-    display: none;
+  display: none;
 }
