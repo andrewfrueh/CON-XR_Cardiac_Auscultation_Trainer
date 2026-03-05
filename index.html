@@ -18,6 +18,17 @@
           <div class="loading-spinner"></div>
           Loading Realistic Heart Model...
         </div>
+        <div id="ekg-container">
+          <div id="ekg-frame">
+            <div id="ekg-header">
+              <span id="ekg-label">❤ EKG</span>
+              <span id="ekg-rhythm-name">Normal S1 S2</span>
+            </div>
+            <div id="ekg-canvas-wrap">
+              <canvas id="ekgCanvas"></canvas>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="controls" id="heartControls">
@@ -174,92 +185,7 @@
 
     <!-- Main application (includes controls manager) -->
     <script type="module" src="/src/main.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const nativeSelect = document.getElementById("rhythmSelect");
-        const trigger = document.getElementById("customRhythmTrigger");
-        const selectedText = document.getElementById("customRhythmSelected");
-        const optionsContainer = document.getElementById("customRhythmOptions");
-        const wrapper = document.getElementById("customRhythmSelectWrapper");
+    <script src="/assets/rhythm-dropdown.js" defer></script>
 
-        // Toggle dropdown
-        trigger.addEventListener("click", (e) => {
-          e.stopPropagation();
-          wrapper.classList.toggle("open");
-          // reset filter when opening
-          if (wrapper.classList.contains("open")) {
-            const filter = optionsContainer.querySelector("#rhythmFilter");
-            if (filter) {
-              filter.value = "";
-              optionsContainer.querySelectorAll(".custom-select-option").forEach((el) => (el.style.display = ""));
-            }
-          }
-        });
-
-        // Close when clicking outside of the wrapper
-        document.addEventListener("click", (e) => {
-          if (!wrapper.contains(e.target)) {
-            wrapper.classList.remove("open");
-          }
-        });
-
-        // Observer to populate options when native select is updated
-        const observer = new MutationObserver(() => {
-          // clear existing options and add filter input
-          optionsContainer.innerHTML = "";
-
-          // create filter field as first child
-          const filterInput = document.createElement("input");
-          filterInput.type = "text";
-          filterInput.id = "rhythmFilter";
-          filterInput.placeholder = "Filter...";
-          filterInput.style.marginBottom = "10px";
-          filterInput.addEventListener("input", () => {
-            const text = filterInput.value.toLowerCase();
-            optionsContainer.querySelectorAll(".custom-select-option").forEach((el) => {
-              el.style.display = el.textContent.toLowerCase().includes(text) ? "" : "none";
-            });
-          });
-          optionsContainer.appendChild(filterInput);
-
-          Array.from(nativeSelect.options).forEach((opt, index) => {
-            const optionDiv = document.createElement("div");
-            optionDiv.className = "custom-select-option";
-            optionDiv.textContent = opt.textContent;
-            optionDiv.dataset.value = opt.value;
-
-            // Set initial selected
-            if (opt.selected || index === 0) {
-              if (index === 0 && !nativeSelect.value) {
-                nativeSelect.value = opt.value;
-              }
-              selectedText.textContent = opt.textContent;
-              optionDiv.classList.add("selected");
-            }
-
-            optionDiv.addEventListener("click", (e) => {
-              e.stopPropagation();
-              // Remove selected class from all options
-              document.querySelectorAll(".custom-select-option").forEach((el) => el.classList.remove("selected"));
-              optionDiv.classList.add("selected");
-
-              nativeSelect.value = opt.value;
-              selectedText.textContent = opt.textContent;
-              wrapper.classList.remove("open");
-
-              if (typeof window.switchHeartRhythm === "function") {
-                window.switchHeartRhythm(opt.value);
-              }
-            });
-            optionsContainer.appendChild(optionDiv);
-          });
-        });
-
-        // Observe native select for child node modifications (options added)
-        if (nativeSelect) {
-          observer.observe(nativeSelect, { childList: true });
-        }
-      });
-    </script>
   </body>
 </html>
