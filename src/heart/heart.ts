@@ -8,6 +8,7 @@ import {
   SelectableRhythm,
   SelectableRhythmName,
 } from "./heartRhythms/Rhythm.js";
+import { getNewRhythmNames } from "./heartRhythms/config/rhythm-templates.js";
 import { FBXLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 // Global variables
@@ -100,10 +101,14 @@ export async function init(): Promise<void> {
 
   if (rhythmSelect) {
     rhythmSelect.innerHTML = "";
+    const newRhythms = getNewRhythmNames();
     Object.entries(SelectableRhythmName).forEach(([key, name]) => {
       const option = document.createElement("option");
       option.value = key;
       option.textContent = name as string;
+      if (newRhythms.has(key as any)) {
+        option.dataset.isNew = "true";
+      }
       rhythmSelect.appendChild(option);
     });
   }

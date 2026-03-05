@@ -37,6 +37,8 @@ export type RhythmTemplate = {
   name: string;
   displayName: string;
   description?: string;
+  /** When true, an orange "New" badge is rendered next to the rhythm name in the selector */
+  isNew?: boolean;
   sounds: TemplateSoundEvent[];
 };
 
@@ -180,6 +182,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "VentricularSeptalDefect",
     displayName: "Ventricular Septal Defect",
     description: "Ventricular septal defect",
+    isNew: true,
     sounds: [
       { time: 0.12, soundKey: "S1" },
       { time: 0.23, soundKey: "EarlyDiastolicMurmur", volumeMultiplier: 4 },
@@ -191,6 +194,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "SecondHeartSoundFixed",
     displayName: "Second Heart Sound Fixed",
     description: "Second heart sound fixed",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S1" },
       { time: 0.72, soundKey: "S2" },
@@ -201,6 +205,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "SecondHeartSoundTumorPlop",
     displayName: "Second Heart Sound Tumor Plop",
     description: "Second heart sound tumor plop",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S1", volumeMultiplier: 0.9 },
       { time: 0.79, soundKey: "S2" },
@@ -211,6 +216,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "SecondHeartSoundAndLateSystolicClick",
     displayName: "Second Heart Sound and Late Systolic Click",
     description: "Second heart sound with late systolic click",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S1", volumeMultiplier: 0.9 },
       {
@@ -234,6 +240,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "SummationGallop",
     displayName: "Summation Gallop",
     description: "Summation gallop",
+    isNew: true,
     sounds: [
       { time: 0.45, soundKey: "S1" },
       { time: 0.67, soundKey: "S2" },
@@ -244,6 +251,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "TetralogyOfFallot",
     displayName: "Tetralogy of Fallot",
     description: "Tetralogy of Fallot",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S1" },
       { time: 0.45, soundKey: "S2", volumeMultiplier: 0.5 },
@@ -255,6 +263,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "ThirdAndFourthHeartSoundGallop",
     displayName: "Third and Fourth Heart Sound Gallop",
     description: "Third and fourth heart sound gallop",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S2", volumeMultiplier: 0.5 },
       { time: 0.75, soundKey: "S3" },
@@ -265,6 +274,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "ArrhythmogenicRVADysplasia",
     displayName: "Arrhythmogenic RV Dysplasia",
     description: "Arrhythmogenic RV dysplasia",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S1" },
       {
@@ -284,6 +294,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "AtrialSeptalDefect",
     displayName: "Atrial Septal Defect",
     description: "Atrial septal defect",
+    isNew: true,
     sounds: [
       { time: 0.12, soundKey: "S1" },
       {
@@ -305,6 +316,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "CoarctationOfTheAorta",
     displayName: "Coarctation of the Aorta",
     description: "Coarctation of the aorta",
+    isNew: true,
     sounds: [
       { time: 0.32, soundKey: "S1" },
       {
@@ -327,6 +339,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "CommotioCordis",
     displayName: "Commotio Cordis",
     description: "Ventricular fibrillation following chest impact",
+    isNew: true,
     sounds: [
       { time: 0.21, soundKey: "S1" },
       { time: 0.34, soundKey: "EarlyDiastolicMurmur", volumeMultiplier: 3 },
@@ -337,8 +350,9 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "EbsteinsAnomaly",
     displayName: "Ebsteins Anomaly",
     description: "Widely split S1 and S2, with S3, S4 and holosystolic murmur",
+    isNew: true,
     sounds: [
-      { time: 0.01, soundKey: "S1"},
+      { time: 0.01, soundKey: "S1" },
       {
         time: 0.07,
         soundKey: "HolosystolicMurmur",
@@ -359,6 +373,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "ExerciseHeartRate",
     displayName: "Exercise Heart Rate",
     description: "Exercise heart rate",
+    isNew: true,
     sounds: [
       { time: 0.25, soundKey: "S1" },
       { time: 0.68, soundKey: "S2", volumeMultiplier: 0.15 },
@@ -368,6 +383,7 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     name: "FirstHeartSoundMinimallySplit",
     displayName: "First Heart Sound Minimally Split",
     description: "First heart sound minimally split",
+    isNew: true,
     sounds: [
       { time: 0.26, soundKey: "S1" },
       { time: 0.32, soundKey: "S1" },
@@ -382,4 +398,13 @@ export type RhythmName = keyof typeof rhythmTemplates;
 /** Get list of all rhythm names */
 export function getAvailableRhythmNames(): RhythmName[] {
   return Object.keys(rhythmTemplates) as RhythmName[];
+}
+
+/** Get a set of rhythm names that are marked as new */
+export function getNewRhythmNames(): Set<RhythmName> {
+  return new Set(
+    (Object.keys(rhythmTemplates) as RhythmName[]).filter(
+      (key) => rhythmTemplates[key].isNew === true,
+    ),
+  );
 }
