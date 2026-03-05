@@ -254,10 +254,33 @@ body.light-mode .custom-select-options #rhythmFilter {
   background: rgba(128, 128, 128, 0.15);
 }
 
+.custom-select-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .custom-select-option.selected {
   background: rgba(231, 76, 60, 0.15);
   color: var(--color-primary);
   font-weight: 600;
+}
+
+/* "New" badge rendered next to rhythm names in the selector */
+.badge-new {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7b00, #ff4400);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(255, 100, 0, 0.4);
 }
 
 /* Sliders */

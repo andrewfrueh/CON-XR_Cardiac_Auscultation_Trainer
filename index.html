@@ -217,7 +217,8 @@
           filterInput.addEventListener("input", () => {
             const text = filterInput.value.toLowerCase();
             optionsContainer.querySelectorAll(".custom-select-option").forEach((el) => {
-              el.style.display = el.textContent.toLowerCase().includes(text) ? "" : "none";
+              const label = el.dataset.label || el.textContent;
+              el.style.display = label.toLowerCase().includes(text) ? "" : "none";
             });
           });
           optionsContainer.appendChild(filterInput);
@@ -225,8 +226,21 @@
           Array.from(nativeSelect.options).forEach((opt, index) => {
             const optionDiv = document.createElement("div");
             optionDiv.className = "custom-select-option";
-            optionDiv.textContent = opt.textContent;
             optionDiv.dataset.value = opt.value;
+            optionDiv.dataset.label = opt.textContent;
+
+            // Build label span
+            const labelSpan = document.createElement("span");
+            labelSpan.textContent = opt.textContent;
+            optionDiv.appendChild(labelSpan);
+
+            // Inject "New" badge if the option has data-is-new
+            if (opt.dataset.isNew === "true") {
+              const badge = document.createElement("span");
+              badge.className = "badge-new";
+              badge.textContent = "New";
+              optionDiv.appendChild(badge);
+            }
 
             // Set initial selected
             if (opt.selected || index === 0) {
