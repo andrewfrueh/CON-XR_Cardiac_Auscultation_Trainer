@@ -359,92 +359,8 @@
 }
 
 /* ===================================
-   Auscultation Panel
+   Auscultation Points
    =================================== */
-
-.auscultation-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    z-index: 200;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    padding: var(--spacing-md);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    overflow-y: auto;
-}
-
-.auscultation-panel.active {
-    opacity: 1;
-    pointer-events: all;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.auscultation-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.auscultation-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--color-text);
-}
-
-.close-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--glass-border);
-    color: var(--color-text);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
-}
-
-.chest-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto var(--spacing-md);
-    aspect-ratio: 1;
-}
-
-.chest-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: invert(1);
-    opacity: 0.8;
-}
-
-.light-mode .chest-image {
-    filter: invert(0);
-}
 
 .auscultation-points {
     position: absolute;
@@ -487,28 +403,6 @@
     transition: all 0.3s ease;
 }
 
-/* Position each auscultation point */
-/*
-.auscultation-point.aortic {
-    top: 45%;
-    right: 52%;
-}
-
-.auscultation-point.pulmonic {
-    top: 45%;
-    left: 53%;
-}
-
-.auscultation-point.tricuspid {
-    top: 60%;
-    left: 53%;
-}
-
-.auscultation-point.mitral {
-    top: 72%;
-    left: 65%;
-} */
-
 .selected-point-info {
     text-align: center;
     padding: var(--spacing-sm);
@@ -530,15 +424,6 @@
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    .auscultation-panel {
-        width: 95%;
-        max-height: 90vh;
-        padding: var(--spacing-sm);
-    }
-    
-    .chest-container {
-        max-width: 300px;
-    }
     
     .point-dot {
         width: 24px;

@@ -316,6 +316,7 @@ function applyViewState(updateCamera: boolean = true): void {
     if (wasHeartAnimatingBeforeHide) {
       heartController.start();
     }
+    document.getElementsByClassName("label")
   }
 
   if (updateCamera) {
@@ -451,7 +452,10 @@ function animate(): void {
     controls.update();
   }
     
-   updateButtonPositions();
+  if (mannequinGroup.visible) {
+    updateButtonPositions();
+  }
+  
 
   // Render the scene
   renderer.render(scene, camera);
@@ -618,15 +622,6 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   if (currentPointElement) {
     currentPointElement.textContent =
       point.charAt(0).toUpperCase() + point.slice(1);
-  }
-  const auscultationButton = document.getElementById(
-    "auscultation-btn",
-  ) as HTMLButtonElement;
-  if (auscultationButton) {
-    const iconSpan = auscultationButton.querySelector(".icon") as HTMLElement;
-    if (iconSpan) {
-      iconSpan.textContent = point.charAt(0).toUpperCase() + point.charAt(1);
-    }
   }
 
   // Remove active class from all points
