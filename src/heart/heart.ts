@@ -302,6 +302,7 @@ function updateButtonPositions() {
 function applyViewState(updateCamera: boolean = true): void {
   const showMannequin = currentView === "mannequin";
   const showHeart = currentView === "heart";
+  const auscultationBtns= document.getElementsByClassName("auscultation-point");
 
   if (mannequinGroup) mannequinGroup.visible = showMannequin;
   if (heartGroup) heartGroup.visible = showHeart;
@@ -312,11 +313,23 @@ function applyViewState(updateCamera: boolean = true): void {
     if (isAnimating) {
       heartController.stop();
     }
+
+    for (let i = 0; i < auscultationBtns.length; i++ ){
+      const btn = auscultationBtns[i] as HTMLButtonElement;
+      btn.disabled = false;
+    }
+
   } else {
     if (wasHeartAnimatingBeforeHide) {
       heartController.start();
     }
-    document.getElementsByClassName("label")
+    
+    for (let i = 0; i < auscultationBtns.length; i++ ){
+      const btn = auscultationBtns[i] as HTMLButtonElement;
+      btn.disabled = true;
+    }
+    
+    
   }
 
   if (updateCamera) {
@@ -557,7 +570,6 @@ declare global {
     getAvailableHeartRhythms: () => string[];
     toggleMode: () => void;
     toggleView: () => void;
-    toggleAuscultationPanel: () => void;
     selectAuscultationPoint: (point: AuscultationLocation) => void;
     setAuscultationCallback: (
       callback: (point: AuscultationLocation) => void,
@@ -596,12 +608,6 @@ function toggleMode(): void {
 }
 
 // Auscultation point management functions
-function toggleAuscultationPanel(): void {
-  const panel = document.getElementById("auscultationPanel");
-  if (panel) {
-    panel.classList.toggle("active");
-  }
-}
 
 function selectAuscultationPoint(point: AuscultationLocation): void {
   const validPoints: AuscultationLocation[] = [
@@ -666,7 +672,6 @@ window.heartController = heartController;
 window.selectAuscultationPoint = selectAuscultationPoint;
 window.setHeartSoundVolume = setHeartSoundVolume;
 window.toggleMode = toggleMode;
-window.toggleAuscultationPanel = toggleAuscultationPanel;
 window.setAuscultationCallback = setAuscultationCallback;
 window.getCurrentAuscultationPoint = getCurrentAuscultationPoint;
 window.switchHeartRhythm = switchHeartRhythm;

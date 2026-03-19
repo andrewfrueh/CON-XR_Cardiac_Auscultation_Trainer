@@ -387,6 +387,10 @@
     transform: scale(1.2);
 }
 
+.auscultation-point:disabled {
+    visibility: hidden;
+}
+
 .auscultation-point.active .point-dot {
     background: var(--color-accent);
     box-shadow: 0 0 20px var(--color-accent);
@@ -422,6 +426,10 @@
     font-weight: 600;
 }
 
+.auscultation-btn {
+    position: absolute;
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
     
@@ -447,8 +455,4 @@
 
 .tricuspid-group {
     display: none;
-}
-
-.label {
-    position: absolute;
 }
