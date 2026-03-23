@@ -1,13 +1,7 @@
 // Initially created with Cursor using claude-4-sonnet
 import * as THREE from "three";
 import { HeartController } from "./HeartController.js";
-import type {
-  AuscultationLocation,
-  availableRhythms,
-  Rhythm,
-  SelectableRhythm,
-  SelectableRhythmName,
-} from "./heartRhythms/Rhythm.js";
+import type { AuscultationLocation, availableRhythms, Rhythm, SelectableRhythm, SelectableRhythmName } from "./heartRhythms/Rhythm.js";
 import { FBXLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 // Global variables
@@ -23,9 +17,7 @@ let fbxLoader: FBXLoader;
 let textureLoader: THREE.TextureLoader;
 let heartTexture: THREE.Texture | null = null;
 let isDarkMode = true;
-const rhythmSelect = document.getElementById(
-  "rhythmSelect",
-) as HTMLSelectElement;
+const rhythmSelect = document.getElementById("rhythmSelect") as HTMLSelectElement;
 
 // Blendshapes/Morph targets variables for FBX
 let morphTargetMeshes: THREE.Mesh[] = [];
@@ -49,11 +41,11 @@ let wasHeartAnimatingBeforeHide = true;
 const heartCameraPos = new THREE.Vector3(0, 0, 6);
 const mannequinCameraPos = new THREE.Vector3(0, 0, 8);
 const buttons = [
-  { element: document.getElementById('aortic-but'), position: new THREE.Vector3(-.4, 1.5, 1.25) },
-  { element: document.getElementById('pulmonic-but'), position: new THREE.Vector3 (.25, 1.5, 1.25) },
-  { element: document.getElementById('tricuspid-but'), position: new THREE.Vector3 (.25, .75, 1.5) },
-  { element: document.getElementById('mitral-but'), position: new THREE.Vector3 (.75, 0, 1.25) }
-]
+  { element: document.getElementById("aortic-but"), position: new THREE.Vector3(-0.4, 1.5, 1.25) },
+  { element: document.getElementById("pulmonic-but"), position: new THREE.Vector3(0.25, 1.5, 1.25) },
+  { element: document.getElementById("tricuspid-but"), position: new THREE.Vector3(0.25, 0.75, 1.5) },
+  { element: document.getElementById("mitral-but"), position: new THREE.Vector3(0.75, 0, 1.25) },
+];
 
 // Initialize the 3D scene
 export function init(): void {
@@ -90,7 +82,7 @@ export function init(): void {
   renderer.setPixelRatio(window.devicePixelRatio);
 
   // Create controls
-  
+
   try {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -99,6 +91,15 @@ export function init(): void {
     controls.enableZoom = true; // Enable zoom controls
     controls.minDistance = 4; // Minimum zoom distance
     controls.maxDistance = 10; // Maximum zoom distance
+    
+    // Allow slight horizontal and very slight vertical rotation
+    controls.enableRotate = true;
+    // VERTICAL
+    controls.minPolarAngle = Math.PI * 0.35; // Allow slight up tilt
+    controls.maxPolarAngle = Math.PI * 0.60; // Allow slight down tilt
+    // HORIZONTAL
+    controls.minAzimuthAngle = -Math.PI * 0.3; // Allow ~54 degrees left/right
+    controls.maxAzimuthAngle = Math.PI * 0.3;
   } catch (error) {
     console.error("Error creating OrbitControls:", error);
   }
@@ -129,8 +130,8 @@ export function init(): void {
   applyViewState(false);
 
   // Load models
-  loadMannequinModel();  // mannequin should be default visible
-  loadHeartModel();      // heart starts hidden by default
+  loadMannequinModel(); // mannequin should be default visible
+  loadHeartModel(); // heart starts hidden by default
 
   // Load the heart model
   loadHeartModel();
@@ -169,8 +170,7 @@ function initFBXBlendshapes(fbxObject: THREE.Group): void {
 
   // Store morph targets globally for access
   (window as any).morphTargetMeshes = morphTargetMeshes;
-  (window as any).updateBlendshapes = (blendshapes: any) =>
-    heartController.applyExternalBlendshapes(blendshapes);
+  (window as any).updateBlendshapes = (blendshapes: any) => heartController.applyExternalBlendshapes(blendshapes);
 }
 
 // Load the shape-keyed heart model and separate into top and bottom halves
@@ -200,11 +200,7 @@ function loadHeartModel(): void {
       heart.scale.setScalar(scale);
 
       // Center the heart
-      heart.position.set(
-        -center.x * scale,
-        -center.y * scale + 0.2,
-        -center.z * scale,
-      );
+      heart.position.set(-center.x * scale, -center.y * scale + 0.2, -center.z * scale);
 
       // Start heart controller animation
       heartController.start();
@@ -246,13 +242,20 @@ function loadHeartModel(): void {
 function loadMannequinModel(): void {
   updateButtonPositions();
   fbxLoader.load(
-    "./public/assets/chest.fbx",
+    "/assets/chest.fbx",
     function (object: THREE.Group) {
-      // Basic shadows
+      // Apply matte material to reduce shininess
       object.traverse((child: THREE.Object3D) => {
         if (child instanceof THREE.Mesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
+          // child.castShadow = true;
+          // child.receiveShadow = true;
+          child.material = new THREE.MeshPhongMaterial({
+            // ignoring the other material
+            // color: (child.material as THREE.MeshPhongMaterial).color,
+            color: new THREE.Color().setHex(0xb88e79),
+            shininess: 10, // Low shininess for matte appearance
+            side: THREE.DoubleSide,
+          });
         }
       });
 
@@ -265,11 +268,7 @@ function loadMannequinModel(): void {
       const scale = 6 / maxDim; // tweak if needed
       object.scale.setScalar(scale);
 
-      object.position.set(
-        -center.x * scale,
-        -center.y * scale,
-        -center.z * scale
-      );
+      object.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
 
       mannequinGroup.add(object);
 
@@ -277,12 +276,12 @@ function loadMannequinModel(): void {
       applyViewState(false);
     },
     undefined,
-    (error) => console.error("Error loading mannequin model:", error)
+    (error) => console.error("Error loading mannequin model:", error),
   );
 }
 
 function updateButtonPositions() {
-  buttons.forEach (btn => {
+  buttons.forEach((btn) => {
     if (!mannequinGroup) return;
 
     // Project the buttons 3d location to the 2d screen
@@ -291,18 +290,18 @@ function updateButtonPositions() {
     pos.project(camera);
 
     // Position the buttons on the screen
-    const x = (pos.x * 0.5 + .5) * window.innerWidth;
-    const y = (-pos.y * 0.5 + .5) * window.innerHeight;
+    const x = (pos.x * 0.5 + 0.5) * window.innerWidth;
+    const y = (-pos.y * 0.5 + 0.5) * window.innerHeight;
 
     btn.element.style.left = x + "px";
     btn.element.style.top = y + "px";
-  })
+  });
 }
 
 function applyViewState(updateCamera: boolean = true): void {
   const showMannequin = currentView === "mannequin";
   const showHeart = currentView === "heart";
-  const auscultationBtns= document.getElementsByClassName("auscultation-point");
+  const auscultationBtns = document.getElementsByClassName("auscultation-point");
 
   if (mannequinGroup) mannequinGroup.visible = showMannequin;
   if (heartGroup) heartGroup.visible = showHeart;
@@ -314,35 +313,29 @@ function applyViewState(updateCamera: boolean = true): void {
       heartController.stop();
     }
 
-    for (let i = 0; i < auscultationBtns.length; i++ ){
+    for (let i = 0; i < auscultationBtns.length; i++) {
       const btn = auscultationBtns[i] as HTMLButtonElement;
       btn.disabled = false;
     }
-
   } else {
     if (wasHeartAnimatingBeforeHide) {
       heartController.start();
     }
-    
-    for (let i = 0; i < auscultationBtns.length; i++ ){
+
+    for (let i = 0; i < auscultationBtns.length; i++) {
       const btn = auscultationBtns[i] as HTMLButtonElement;
       btn.disabled = true;
     }
-    
-    
   }
 
   if (updateCamera) {
     camera.position.copy(showHeart ? heartCameraPos : mannequinCameraPos);
     if (controls) controls.update();
   }
-    
 }
 
 function toggleView(): void {
-  const toggleButton = document.getElementById(
-    "toggle-view"
-  ) as HTMLButtonElement;
+  const toggleButton = document.getElementById("toggle-view") as HTMLButtonElement;
 
   const iconSpan = toggleButton?.querySelector(".icon") as HTMLElement;
 
@@ -460,15 +453,14 @@ function animate(): void {
   heartController.update();
 
   // Update controls
-  
+
   if (controls && controls.update) {
     controls.update();
   }
-    
+
   if (mannequinGroup.visible) {
     updateButtonPositions();
   }
-  
 
   // Render the scene
   renderer.render(scene, camera);
@@ -493,7 +485,7 @@ function onWindowResize(): void {
 // Reset camera to default position
 function resetCamera(): void {
   camera.position.set(0, 0, 4); // Match the initial zoom position
-  
+
   if (controls && controls.reset) {
     controls.reset();
   }
@@ -504,12 +496,8 @@ function toggleAnimation(): void {
   isAnimating = !isAnimating;
 
   // Update both play buttons (expanded and collapsed versions)
-  const btnExpanded = document.getElementById(
-    "playPauseBtn",
-  ) as HTMLButtonElement;
-  const btnCollapsed = document.getElementById(
-    "playPauseBtnCollapsed",
-  ) as HTMLButtonElement;
+  const btnExpanded = document.getElementById("playPauseBtn") as HTMLButtonElement;
+  const btnCollapsed = document.getElementById("playPauseBtnCollapsed") as HTMLButtonElement;
 
   const newIcon = isAnimating ? "⏸" : "▶";
   const newTitle = isAnimating ? "Pause" : "Play";
@@ -571,9 +559,7 @@ declare global {
     toggleMode: () => void;
     toggleView: () => void;
     selectAuscultationPoint: (point: AuscultationLocation) => void;
-    setAuscultationCallback: (
-      callback: (point: AuscultationLocation) => void,
-    ) => void;
+    setAuscultationCallback: (callback: (point: AuscultationLocation) => void) => void;
     getCurrentAuscultationPoint: () => AuscultationLocation | null;
   }
 }
@@ -589,9 +575,7 @@ function setHeartSoundVolume(volume: number): void {
 }
 
 function toggleMode(): void {
-  const modeButton = document.getElementById(
-    "change-mode",
-  ) as HTMLButtonElement;
+  const modeButton = document.getElementById("change-mode") as HTMLButtonElement;
   const iconSpan = modeButton.querySelector(".icon") as HTMLElement;
 
   isDarkMode = !isDarkMode;
@@ -610,12 +594,7 @@ function toggleMode(): void {
 // Auscultation point management functions
 
 function selectAuscultationPoint(point: AuscultationLocation): void {
-  const validPoints: AuscultationLocation[] = [
-    "Aortic",
-    "Pulmonic",
-    "Tricuspid",
-    "Mitral",
-  ];
+  const validPoints: AuscultationLocation[] = ["Aortic", "Pulmonic", "Tricuspid", "Mitral"];
 
   if (!validPoints.includes(point as AuscultationLocation)) {
     console.error(`Invalid auscultation point: ${point}`);
@@ -626,8 +605,7 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   // Update UI to show selected point
   const currentPointElement = document.getElementById("currentPoint");
   if (currentPointElement) {
-    currentPointElement.textContent =
-      point.charAt(0).toUpperCase() + point.slice(1);
+    currentPointElement.textContent = point.charAt(0).toUpperCase() + point.slice(1);
   }
 
   // Remove active class from all points
@@ -635,9 +613,7 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   allPoints.forEach((p) => p.classList.remove("active"));
 
   // Add active class to selected point
-  const selectedPoint = document.querySelector(
-    `.auscultation-point.${point.toLowerCase()}`,
-  );
+  const selectedPoint = document.querySelector(`.auscultation-point.${point.toLowerCase()}`);
   if (selectedPoint) {
     selectedPoint.classList.add("active");
   }
@@ -652,9 +628,7 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   // console.log(`Selected auscultation point: ${auscultationPoint}`);
 }
 
-function setAuscultationCallback(
-  callback: (point: AuscultationLocation) => void,
-): void {
+function setAuscultationCallback(callback: (point: AuscultationLocation) => void): void {
   auscultationCallback = callback;
 }
 
@@ -666,8 +640,7 @@ window.resetCamera = resetCamera;
 window.toggleAnimation = toggleAnimation;
 window.setHeartCycleDuration = setHeartCycleDuration;
 window.setHeartBPM = setHeartBPM;
-window.updateBlendshapes = (blendshapes: any) =>
-  heartController.applyExternalBlendshapes(blendshapes);
+window.updateBlendshapes = (blendshapes: any) => heartController.applyExternalBlendshapes(blendshapes);
 window.heartController = heartController;
 window.selectAuscultationPoint = selectAuscultationPoint;
 window.setHeartSoundVolume = setHeartSoundVolume;
