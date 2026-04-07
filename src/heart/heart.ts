@@ -41,9 +41,6 @@ let currentView: ViewMode = "mannequin";
 // Group for mannequin (will be loaded)
 let mannequinGroup: THREE.Group;
 
-// If we hide the heart, remember whether it was animating so we can resume cleanly
-let wasHeartAnimatingBeforeHide = true;
-
 // Optional camera presets (tweak numbers after you see it)
 const heartCameraPos = new THREE.Vector3(0, 0, 6);
 const mannequinCameraPos = new THREE.Vector3(0, 0, 8);
@@ -324,19 +321,12 @@ function applyViewState(updateCamera: boolean = true): void {
 
   // Pause/resume heart animation appropriately
   if (!showHeart) {
-    wasHeartAnimatingBeforeHide = isAnimating;
-    if (isAnimating) {
-      heartController.stop();
-    }
 
     for (let i = 0; i < auscultationBtns.length; i++) {
       const btn = auscultationBtns[i] as HTMLButtonElement;
       btn.disabled = false;
     }
   } else {
-    if (wasHeartAnimatingBeforeHide) {
-      heartController.start();
-    }
 
     for (let i = 0; i < auscultationBtns.length; i++) {
       const btn = auscultationBtns[i] as HTMLButtonElement;
