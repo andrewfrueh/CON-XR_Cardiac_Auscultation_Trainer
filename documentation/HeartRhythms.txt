@@ -1,0 +1,62 @@
+This document will serve as information of what heart rhythms will be displayed in the application.
+
+These sounds were taken from the University of Michigan Heart Sound and Murmur Library. https://open.umich.edu/find/open-educational-resources/medical/heart-sound-murmur-library
+
+The animation of the heart actually beating is the same for all of the rhythms. It only shows the beating animation of the heart, which includes the atria contracting and then the ventericles contracting.
+The animation can be found in the NormalS1S2.ts file in the Aortic folder.
+
+
+This section will show all rhythms that are displayed in the application. These rhythms apply to all auscultation locations.
+
+	Rhythms:
+		Normal S1 S2
+		S3 Gallop
+		S4 Gallop
+		Mid-Systolic Click
+		Early Systolic Murmur
+		Mid Systolic Murmur
+		Late Systolic Murmur
+		Click Late Systolic Murmur
+
+		Other options:
+			S4 & Mid-Sys Murmur
+			Systolic & Diastolic Murmur
+
+Dev notes: There are other rhythms within this project that are not included within the application. This includes the two rhythms in the other options (shown above), and more can be found within the folders (specifically the Mitral and Aortic folders).
+While these rhythms sound close to the original (taken from the library), we wanted to get a smaller and more general set to cover all auscultation locations. Therefore they did not end up in our final implementation of the application.
+
+
+
+This section will discuss whether the rhythms were taken straight from the library (noted above) or if they were procedurally generated. If procedurally generated, rules for how we made the sounds will be shown.
+The rules we setup is from our own research about what the rhythms should sound like from the different auscultation locations (this research will include help from AI and more information can be found in the Rhythm Auscultation Details excel sheet in the shared OneDrive folder).
+
+	Auscultation Locations:
+
+		Mitral (Apex):
+			All Rhythms from this location were taken straight from the library.
+
+		Aortic:
+			Normal S1 S2 - from library
+			The rest of the rhythms were procedurally generated
+			Rules:
+				S3 and S4 sounds can barely be heard from this region (or not heard at all)
+				Click is barely heard hear (or not at all here)
+				Early Systolic Murmur sounds similar to Mitral region so no changes
+				Mid Systolic Murmur sounds a little louder in this location
+				Late Systolic Murmur sounds quieter in this location
+
+		Pulmonic:
+			All the rhythms were procedurally generated
+			Rules:
+				S2 is the loudest 
+				S1 is softer
+				S3, S4, annd click usually very faint or not heard
+				Murmurs are not as prominant as the mitral location
+
+		Tricuspid:
+			All the rhythms were procedurally generated
+			Rules:
+				Murmurs are not as prominant as the mitral location
+				S3 and S4 waves are not as prominant 
+				S1 and S2 not as prominant and lower pitched
+			

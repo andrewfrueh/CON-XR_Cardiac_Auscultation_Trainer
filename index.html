@@ -29,6 +29,52 @@
             </div>
           </div>
         </div>
+
+        <!--Add auscultation points to the 3D chest-->
+        <div id="aortic-but" class="auscultation-btn">
+          <button
+            class="auscultation-point aortic active"
+            onclick="selectAuscultationPoint('Aortic')"
+            title="Aortic - 2nd ICS, Right Sternal Border"
+            aria-label="Aortic point"
+          >
+            <span class="point-dot"></span>
+          </button>
+        </div>
+        <!--end aortic-but-->
+        <div id="pulmonic-but" class="auscultation-btn">
+          <button
+            class="auscultation-point pulmonic"
+            onclick="selectAuscultationPoint('Pulmonic')"
+            title="Pulmonic - 2nd ICS, Left Sternal Border"
+            aria-label="Pulmonic point"
+          >
+            <span class="point-dot"></span>
+          </button>
+        </div>
+        <!--end pulmonic-but-->
+        <div id="tricuspid-but" class="auscultation-btn">
+          <button
+            class="auscultation-point tricuspid"
+            onclick="selectAuscultationPoint('Tricuspid')"
+            title="Tricuspid - 4th ICS, Left Sternal Border"
+            aria-label="Tricuspid point"
+          >
+            <span class="point-dot"></span>
+          </button>
+        </div>
+        <!--end trrcuspid-but-->
+        <div id="mitral-but" class="auscultation-btn">
+          <button
+            class="auscultation-point mitral"
+            onclick="selectAuscultationPoint('Mitral')"
+            title="Mitral (Apex) - 5th ICS, Midclavicular Line"
+            aria-label="Mitral point"
+          >
+            <span class="point-dot"></span>
+          </button>
+        </div>
+        <!--end mitral-but-->
       </div>
 
       <div class="controls" id="heartControls">
@@ -49,14 +95,8 @@
           <button class="control-btn icon-btn" id="change-mode" onclick="toggleMode()" aria-lebel="Change Background" title="Change Background">
             <span class="icon">🌙</span>
           </button>
-          <button
-            class="control-btn icon-btn"
-            id="auscultation-btn"
-            onclick="toggleAuscultationPanel()"
-            aria-label="Auscultation Points"
-            title="Auscultation Points"
-          >
-            <span class="icon">Ao</span>
+          <button class="control-btn icon-btn" id="toggle-view" onclick="toggleView()" aria-label="Toggle View" title="Toggle View">
+            <span class="icon">❤️</span>
           </button>
         </div>
 
@@ -121,54 +161,6 @@
             "
           />
           <span id="volumeValue" class="slider-value">70%</span>
-        </div>
-      </div>
-
-      <!-- Auscultation Panel -->
-      <div class="auscultation-panel" id="auscultationPanel">
-        <div class="auscultation-header">
-          <h3>Select Auscultation Point</h3>
-          <button class="close-btn" onclick="toggleAuscultationPanel()" aria-label="Close">✕</button>
-        </div>
-        <div class="chest-container">
-          <img src="assets/chest.png" alt="Chest diagram" class="chest-image" />
-          <div class="auscultation-points">
-            <button
-              class="auscultation-point aortic active"
-              onclick="selectAuscultationPoint('Aortic')"
-              title="Aortic - 2nd ICS, Right Sternal Border"
-              aria-label="Aortic point"
-            >
-              <span class="point-dot"></span>
-            </button>
-            <button
-              class="auscultation-point pulmonic"
-              onclick="selectAuscultationPoint('Pulmonic')"
-              title="Pulmonic - 2nd ICS, Left Sternal Border"
-              aria-label="Pulmonic point"
-            >
-              <span class="point-dot"></span>
-            </button>
-            <button
-              class="auscultation-point tricuspid"
-              onclick="selectAuscultationPoint('Tricuspid')"
-              title="Tricuspid - 4th ICS, Left Sternal Border"
-              aria-label="Tricuspid point"
-            >
-              <span class="point-dot"></span>
-            </button>
-            <button
-              class="auscultation-point mitral"
-              onclick="selectAuscultationPoint('Mitral')"
-              title="Mitral (Apex) - 5th ICS, Midclavicular Line"
-              aria-label="Mitral point"
-            >
-              <span class="point-dot"></span>
-            </button>
-          </div>
-        </div>
-        <div class="selected-point-info" id="selectedPointInfo">
-          <p>Current: <strong id="currentPoint">Aortic</strong></p>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
   SelectableRhythm,
   SelectableRhythmName,
 } from "./heartRhythms/Rhythm.js";
+import { getNewRhythmNames } from "./heartRhythms/config/rhythm-templates.js";
 import { FBXLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 // Global variables
@@ -31,6 +32,27 @@ let root: THREE.Bone | null = null;
 
 // Heart controller singleton
 let heartController: HeartController = HeartController.getInstance();
+
+type ViewMode = "mannequin" | "heart";
+
+// View state (default mannequin)
+let currentView: ViewMode = "mannequin";
+
+// Group for mannequin (will be loaded)
+let mannequinGroup: THREE.Group;
+
+// If we hide the heart, remember whether it was animating so we can resume cleanly
+let wasHeartAnimatingBeforeHide = true;
+
+// Optional camera presets (tweak numbers after you see it)
+const heartCameraPos = new THREE.Vector3(0, 0, 6);
+const mannequinCameraPos = new THREE.Vector3(0, 0, 8);
+const buttons = [
+  { element: document.getElementById("aortic-but"), position: new THREE.Vector3(-0.4, 1.5, 1.25) },
+  { element: document.getElementById("pulmonic-but"), position: new THREE.Vector3(0.25, 1.5, 1.25) },
+  { element: document.getElementById("tricuspid-but"), position: new THREE.Vector3(0.25, 0.75, 1.5) },
+  { element: document.getElementById("mitral-but"), position: new THREE.Vector3(0.75, 0, 1.25) },
+];
 
 // Initialize the 3D scene
 export async function init(): Promise<void> {
@@ -67,6 +89,7 @@ export async function init(): Promise<void> {
   renderer.setPixelRatio(window.devicePixelRatio);
 
   // Create controls
+
   try {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -75,6 +98,15 @@ export async function init(): Promise<void> {
     controls.enableZoom = true; // Enable zoom controls
     controls.minDistance = 4; // Minimum zoom distance
     controls.maxDistance = 10; // Maximum zoom distance
+    
+    // Allow slight horizontal and very slight vertical rotation
+    controls.enableRotate = true;
+    // VERTICAL
+    controls.minPolarAngle = Math.PI * 0.35; // Allow slight up tilt
+    controls.maxPolarAngle = Math.PI * 0.60; // Allow slight down tilt
+    // HORIZONTAL
+    controls.minAzimuthAngle = -Math.PI * 0.3; // Allow ~54 degrees left/right
+    controls.maxAzimuthAngle = Math.PI * 0.3;
   } catch (error) {
     console.error("Error creating OrbitControls:", error);
   }
@@ -92,18 +124,33 @@ export async function init(): Promise<void> {
   // Add lighting
   addLighting();
 
-  // Load the heart model
-  loadHeartModel();
+  // Create groups
+  heartGroup = new THREE.Group();
+  scene.add(heartGroup);
+
+  mannequinGroup = new THREE.Group();
+  scene.add(mannequinGroup);
+
+  // Default view on load
+  applyViewState(false);
+
+  // Load models
+  loadMannequinModel(); // mannequin should be default visible
+  loadHeartModel(); // heart starts hidden by default
 
   // Start animation loop
   animate();
 
   if (rhythmSelect) {
     rhythmSelect.innerHTML = "";
+    const newRhythms = getNewRhythmNames();
     Object.entries(SelectableRhythmName).forEach(([key, name]) => {
       const option = document.createElement("option");
       option.value = key;
       option.textContent = name as string;
+      if (newRhythms.has(key as any)) {
+        option.dataset.isNew = "true";
+      }
       rhythmSelect.appendChild(option);
     });
   }
@@ -185,10 +232,6 @@ function loadHeartModel(): void {
         }
       });
 
-      // Create a group for the heart first
-      heartGroup = new THREE.Group();
-      scene.add(heartGroup);
-
       // Add the heart directly to the scene
       heartGroup.add(object);
 
@@ -210,6 +253,122 @@ function loadHeartModel(): void {
       }
     },
   );
+}
+
+function loadMannequinModel(): void {
+  updateButtonPositions();
+  fbxLoader.load(
+    "./assets/chest.fbx",
+    function (object: THREE.Group) {
+      // Apply matte material to reduce shininess
+      object.traverse((child: THREE.Object3D) => {
+        if (child instanceof THREE.Mesh) {
+          // child.castShadow = true;
+          // child.receiveShadow = true;
+          child.material = new THREE.MeshPhongMaterial({
+            // ignoring the other material
+            // color: (child.material as THREE.MeshPhongMaterial).color,
+            color: new THREE.Color().setHex(0xb88e79),
+            shininess: 10, // Low shininess for matte appearance
+            side: THREE.DoubleSide,
+          });
+        }
+      });
+
+      // Scale/center similar to heart
+      const box = new THREE.Box3().setFromObject(object);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 6 / maxDim; // tweak if needed
+      object.scale.setScalar(scale);
+
+      object.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+
+      mannequinGroup.add(object);
+
+      // Make sure visibility matches currentView (in case load finishes later)
+      applyViewState(false);
+    },
+    undefined,
+    (error) => console.error("Error loading mannequin model:", error),
+  );
+}
+
+function updateButtonPositions() {
+  buttons.forEach((btn) => {
+    if (!mannequinGroup) return;
+
+    // Project the buttons 3d location to the 2d screen
+    const pos = btn.position.clone();
+    mannequinGroup.localToWorld(pos);
+    pos.project(camera);
+
+    // Position the buttons on the screen
+    const x = (pos.x * 0.5 + 0.5) * window.innerWidth;
+    const y = (-pos.y * 0.5 + 0.5) * window.innerHeight;
+
+    btn.element.style.left = x + "px";
+    btn.element.style.top = y + "px";
+  });
+}
+
+function applyViewState(updateCamera: boolean = true): void {
+  const showMannequin = currentView === "mannequin";
+  const showHeart = currentView === "heart";
+  const auscultationBtns = document.getElementsByClassName("auscultation-point");
+
+  if (mannequinGroup) mannequinGroup.visible = showMannequin;
+  if (heartGroup) heartGroup.visible = showHeart;
+
+  // Pause/resume heart animation appropriately
+  if (!showHeart) {
+    wasHeartAnimatingBeforeHide = isAnimating;
+    if (isAnimating) {
+      heartController.stop();
+    }
+
+    for (let i = 0; i < auscultationBtns.length; i++) {
+      const btn = auscultationBtns[i] as HTMLButtonElement;
+      btn.disabled = false;
+    }
+  } else {
+    if (wasHeartAnimatingBeforeHide) {
+      heartController.start();
+    }
+
+    for (let i = 0; i < auscultationBtns.length; i++) {
+      const btn = auscultationBtns[i] as HTMLButtonElement;
+      btn.disabled = true;
+    }
+  }
+
+  if (updateCamera) {
+    camera.position.copy(showHeart ? heartCameraPos : mannequinCameraPos);
+    if (controls) controls.update();
+  }
+}
+
+function toggleView(): void {
+  const toggleButton = document.getElementById("toggle-view") as HTMLButtonElement;
+
+  const iconSpan = toggleButton?.querySelector(".icon") as HTMLElement;
+
+  // Flip state
+  currentView = currentView === "mannequin" ? "heart" : "mannequin";
+
+  // Apply scene visibility + camera logic
+  applyViewState(true);
+
+  // Update icon
+  if (iconSpan) {
+    if (currentView === "mannequin") {
+      iconSpan.textContent = "❤️"; // mannequin/chest icon
+    } else {
+      iconSpan.textContent = "👤"; // heart icon
+    }
+  }
 }
 
 // Load the heart texture
@@ -292,6 +451,10 @@ function animate(): void {
     controls.update();
   }
 
+  if (mannequinGroup.visible) {
+    updateButtonPositions();
+  }
+
   // Render the scene
   renderer.render(scene, camera);
 }
@@ -315,6 +478,7 @@ function onWindowResize(): void {
 // Reset camera to default position
 function resetCamera(): void {
   camera.position.set(0, 0, 4); // Match the initial zoom position
+
   if (controls && controls.reset) {
     controls.reset();
   }
@@ -386,7 +550,7 @@ declare global {
     toggleHeartSoundVariations: () => void;
     getAvailableHeartRhythms: () => string[];
     toggleMode: () => void;
-    toggleAuscultationPanel: () => void;
+    toggleView: () => void;
     selectAuscultationPoint: (point: AuscultationLocation) => void;
     setAuscultationCallback: (callback: (point: AuscultationLocation) => void) => void;
     getCurrentAuscultationPoint: () => AuscultationLocation | null;
@@ -421,12 +585,6 @@ function toggleMode(): void {
 }
 
 // Auscultation point management functions
-function toggleAuscultationPanel(): void {
-  const panel = document.getElementById("auscultationPanel");
-  if (panel) {
-    panel.classList.toggle("active");
-  }
-}
 
 function selectAuscultationPoint(point: AuscultationLocation): void {
   const validPoints: AuscultationLocation[] = ["Aortic", "Pulmonic", "Tricuspid", "Mitral"];
@@ -441,13 +599,6 @@ function selectAuscultationPoint(point: AuscultationLocation): void {
   const currentPointElement = document.getElementById("currentPoint");
   if (currentPointElement) {
     currentPointElement.textContent = point.charAt(0).toUpperCase() + point.slice(1);
-  }
-  const auscultationButton = document.getElementById("auscultation-btn") as HTMLButtonElement;
-  if (auscultationButton) {
-    const iconSpan = auscultationButton.querySelector(".icon") as HTMLElement;
-    if (iconSpan) {
-      iconSpan.textContent = point.charAt(0).toUpperCase() + point.charAt(1);
-    }
   }
 
   // Remove active class from all points
@@ -487,7 +638,7 @@ window.heartController = heartController;
 window.selectAuscultationPoint = selectAuscultationPoint;
 window.setHeartSoundVolume = setHeartSoundVolume;
 window.toggleMode = toggleMode;
-window.toggleAuscultationPanel = toggleAuscultationPanel;
 window.setAuscultationCallback = setAuscultationCallback;
 window.getCurrentAuscultationPoint = getCurrentAuscultationPoint;
 window.switchHeartRhythm = switchHeartRhythm;
+window.toggleView = toggleView;

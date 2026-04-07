@@ -9,6 +9,8 @@ lerna-debug.log*
 
 node_modules
 dist
+# Docs is just dist, but renamed to match Andrew's GitHub pages repo
+docs
 dist-ssr
 *.local
 
