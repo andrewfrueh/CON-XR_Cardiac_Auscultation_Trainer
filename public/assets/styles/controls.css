@@ -109,7 +109,11 @@
   border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   min-height: 44px;
-  min-width: 0; /* allow flexbox to shrink this below its content size */
+  /* Use a flexible target width that respects boundaries */
+  width: auto;
+  min-width: 120px; 
+  max-width: 100%;
+  flex: 1 1 auto; /* Allow growth and shrinking */
 }
 
 .control-group label {
@@ -122,15 +126,15 @@
 /* Custom Select (Glassmorphic) */
 .custom-dropdown-container {
   position: relative;
-  min-width: 0;  /* allow the container to shrink with its parent */
+  /* The dropdown rhythm control specifically targets a larger size but must be flexible */
+  width: 320px; 
   max-width: 100%;
 }
 
 .custom-select-wrapper {
   position: relative;
-  min-width: 0;    /* no hard floor — let parent dictate size */
-  max-width: 100%;
   width: 100%;
+  max-width: 100%;
 }
 
 .custom-select-trigger {
@@ -145,19 +149,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  white-space: nowrap;
+  white-space: normal;
   min-width: 0;
-  overflow: hidden;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* Selected text truncates with ellipsis instead of wrapping */
+/* Selected text wraps naturally */
 #customRhythmSelected {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  word-wrap: break-word;
   min-width: 0;
   flex: 1;
 }
@@ -309,8 +311,8 @@ body.light-mode .custom-select-options #rhythmFilter {
 }
 
 .slider-control input[type="range"] {
-  width: 100px;
-  min-width: 60px;
+  width: 120px;
+  min-width: 80px;
   height: 4px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
@@ -470,7 +472,8 @@ body.light-mode .custom-select-options #rhythmFilter {
     padding: 6px 8px;
   }
   .custom-select-wrapper {
-    min-width: 120px;
+    width: 220px;
+    max-width: 100%;
   }
 
   .controls.expanded .slider-control input[type="range"] {
@@ -519,9 +522,9 @@ body.light-mode .custom-select-options #rhythmFilter {
 
   /* Let slider inputs grow/shrink to fill available space */
   .controls .slider-control input[type="range"] {
-    flex: 1 1 60px;
+    flex: 1 1 80px;
     width: auto;
-    min-width: 60px;
+    min-width: 80px;
   }
 }
 
