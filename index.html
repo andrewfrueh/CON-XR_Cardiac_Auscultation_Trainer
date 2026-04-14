@@ -22,11 +22,14 @@
           <div id="ekg-frame">
             <div id="ekg-header">
               <span id="ekg-label">❤ EKG</span>
-              <span id="ekg-rhythm-name">Normal S1 S2</span>
+              <button id="ekg-toggle" aria-label="Toggle EKG" title="Collapse EKG" onclick="toggleEKG()">
+                <svg id="ekg-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+              </button>
             </div>
             <div id="ekg-canvas-wrap">
               <canvas id="ekgCanvas"></canvas>
             </div>
+            <div id="ekg-resize-handle" aria-hidden="true"></div>
           </div>
         </div>
 
@@ -178,6 +181,59 @@
     <!-- Main application (includes controls manager) -->
     <script type="module" src="/src/main.js"></script>
     <script src="/assets/rhythm-dropdown.js" defer></script>
+    <script>
+      /* ── EKG collapse toggle ───────────────────────────────────────── */
+      function toggleEKG() {
+        const frame = document.getElementById('ekg-frame');
+        const btn   = document.getElementById('ekg-toggle');
+        const collapsed = frame.classList.toggle('ekg-collapsed');
+        btn.title = collapsed ? 'Expand EKG' : 'Collapse EKG';
+        btn.setAttribute('aria-label', collapsed ? 'Expand EKG' : 'Collapse EKG');
+      }
+
+      /* ── EKG resize handle ─────────────────────────────────────────── */
+      (function () {
+        const MIN_W  = 200;  // px
+        const MAX_W  = 520;  // px
+        const MIN_CH = 56;   // canvas-wrap min height, px
+        const MAX_CH = 240;  // canvas-wrap max height, px
+
+        const handle    = document.getElementById('ekg-resize-handle');
+        const container = document.getElementById('ekg-container');
+        const canvasWrap = document.getElementById('ekg-canvas-wrap');
+
+        let dragging = false;
+        let startX, startY, startW, startH;
+
+        function clamp(v, lo, hi) { return Math.min(Math.max(v, lo), hi); }
+
+        handle.addEventListener('pointerdown', function (e) {
+          e.preventDefault();
+          dragging = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          startW = container.offsetWidth;
+          startH = canvasWrap.offsetHeight;
+          handle.setPointerCapture(e.pointerId);
+          document.body.style.cursor = 'nwse-resize';
+          document.body.style.userSelect = 'none';
+        });
+
+        handle.addEventListener('pointermove', function (e) {
+          if (!dragging) return;
+          const newW = clamp(startW + (e.clientX - startX), MIN_W, MAX_W);
+          const newH = clamp(startH + (e.clientY - startY), MIN_CH, MAX_CH);
+          container.style.width = newW + 'px';
+          canvasWrap.style.height = newH + 'px';
+        });
+
+        handle.addEventListener('pointerup', function (e) {
+          dragging = false;
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+        });
+      })();
+    </script>
 
   </body>
 </html>
