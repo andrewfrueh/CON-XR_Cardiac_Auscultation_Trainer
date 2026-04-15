@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A beautiful, interactive 3D heart model built with Three.js and TypeScript",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "jest",

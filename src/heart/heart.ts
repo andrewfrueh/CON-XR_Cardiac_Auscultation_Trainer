@@ -41,6 +41,7 @@ let currentView: ViewMode = "mannequin";
 // Group for mannequin (will be loaded)
 let mannequinGroup: THREE.Group;
 
+
 // Optional camera presets (tweak numbers after you see it)
 const heartCameraPos = new THREE.Vector3(0, 0, 6);
 const mannequinCameraPos = new THREE.Vector3(0, 0, 8);
@@ -294,17 +295,20 @@ function loadMannequinModel(): void {
 }
 
 function updateButtonPositions() {
-  buttons.forEach((btn) => {
-    if (!mannequinGroup) return;
+  const container = document.getElementById("container");
+  if (!container || !mannequinGroup || !mannequinGroup.visible) return;
 
+  const rect = container.getBoundingClientRect();
+
+  buttons.forEach((btn) => {
     // Project the buttons 3d location to the 2d screen
     const pos = btn.position.clone();
     mannequinGroup.localToWorld(pos);
     pos.project(camera);
 
-    // Position the buttons on the screen
-    const x = (pos.x * 0.5 + 0.5) * window.innerWidth;
-    const y = (-pos.y * 0.5 + 0.5) * window.innerHeight;
+    // Position the buttons on the screen using container dimensions
+    const x = rect.left + (pos.x * 0.5 + 0.5) * rect.width;
+    const y = rect.top + (-pos.y * 0.5 + 0.5) * rect.height;
 
     btn.element.style.left = x + "px";
     btn.element.style.top = y + "px";
@@ -315,28 +319,44 @@ function applyViewState(updateCamera: boolean = true): void {
   const showMannequin = currentView === "mannequin";
   const showHeart = currentView === "heart";
   const auscultationBtns = document.getElementsByClassName("auscultation-point");
+  const auscultationBtnContainers = document.getElementsByClassName("auscultation-btn");
 
   if (mannequinGroup) mannequinGroup.visible = showMannequin;
   if (heartGroup) heartGroup.visible = showHeart;
 
-  // Pause/resume heart animation appropriately
+  // Toggle auscultation buttons and containers per view.
+  // NOTE: Do NOT stop/start heartController here. The TimingController must
+  // keep running so the EKG visualizer and audio engine continue in both views.
   if (!showHeart) {
-
     for (let i = 0; i < auscultationBtns.length; i++) {
       const btn = auscultationBtns[i] as HTMLButtonElement;
       btn.disabled = false;
     }
+    // Show auscultation button containers in chest view
+    for (let i = 0; i < auscultationBtnContainers.length; i++) {
+      (auscultationBtnContainers[i] as HTMLElement).style.display = "";
+    }
   } else {
-
     for (let i = 0; i < auscultationBtns.length; i++) {
       const btn = auscultationBtns[i] as HTMLButtonElement;
       btn.disabled = true;
     }
+    // Hide auscultation button containers in heart view
+    for (let i = 0; i < auscultationBtnContainers.length; i++) {
+      (auscultationBtnContainers[i] as HTMLElement).style.display = "none";
+    }
   }
 
   if (updateCamera) {
-    camera.position.copy(showHeart ? heartCameraPos : mannequinCameraPos);
-    if (controls) controls.update();
+    const targetPos = showHeart ? heartCameraPos : mannequinCameraPos;
+    camera.position.copy(targetPos);
+    if (controls) {
+      // Reset the orbit target so controls don't fight the new camera position
+      controls.target.set(0, 0, 0);
+      // Save this as the new "home" position so controls.reset() returns here
+      controls.saveState();
+      controls.update();
+    }
   }
 }
 

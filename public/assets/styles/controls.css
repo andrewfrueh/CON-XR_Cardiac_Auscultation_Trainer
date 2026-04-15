@@ -14,8 +14,8 @@
   gap: var(--spacing-sm);
   align-items: center;
   justify-content: center;
-  max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 32px);
+  max-width: calc(100dvw - 32px);
+  max-height: calc(100dvh - 32px);
   overflow: visible;
   padding: var(--spacing-md);
   background: var(--glass-bg);
@@ -109,6 +109,11 @@
   border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   min-height: 44px;
+  /* Use a flexible target width that respects boundaries */
+  width: auto;
+  min-width: 120px; 
+  max-width: 100%;
+  flex: 1 1 auto; /* Allow growth and shrinking */
 }
 
 .control-group label {
@@ -121,11 +126,15 @@
 /* Custom Select (Glassmorphic) */
 .custom-dropdown-container {
   position: relative;
+  /* The dropdown rhythm control specifically targets a larger size but must be flexible */
+  width: 320px; 
+  max-width: 100%;
 }
 
 .custom-select-wrapper {
   position: relative;
-  min-width: 180px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .custom-select-trigger {
@@ -139,9 +148,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 6px;
+  white-space: normal;
+  min-width: 0;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+/* Selected text wraps naturally */
+#customRhythmSelected {
+  white-space: normal;
+  word-wrap: break-word;
+  min-width: 0;
+  flex: 1;
 }
 
 .custom-select-trigger:hover {
@@ -291,7 +311,8 @@ body.light-mode .custom-select-options #rhythmFilter {
 }
 
 .slider-control input[type="range"] {
-  width: 100px;
+  width: 120px;
+  min-width: 80px;
   height: 4px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
@@ -451,7 +472,8 @@ body.light-mode .custom-select-options #rhythmFilter {
     padding: 6px 8px;
   }
   .custom-select-wrapper {
-    min-width: 120px;
+    width: 220px;
+    max-width: 100%;
   }
 
   .controls.expanded .slider-control input[type="range"] {
@@ -477,6 +499,7 @@ body.light-mode .custom-select-options #rhythmFilter {
     border-left: none;
     border-right: none;
     border-bottom: none;
+    flex-wrap: nowrap; /* keep everything on one row */
   }
 
   /* Hide toggle button and collapsed play button on desktop */
@@ -490,14 +513,21 @@ body.light-mode .custom-select-options #rhythmFilter {
   .controls .control-group {
     display: flex;
   }
-}
 
-/* Tablet */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .controls {
-    max-width: 90vw;
+  /* Allow control groups to shrink so they stay on one row */
+  .controls .control-group {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  /* Let slider inputs grow/shrink to fill available space */
+  .controls .slider-control input[type="range"] {
+    flex: 1 1 80px;
+    width: auto;
+    min-width: 80px;
   }
 }
+
 
 /* ===================================
    Auscultation Points
@@ -597,3 +627,193 @@ body.light-mode .custom-select-options #rhythmFilter {
 .tricuspid-group {
   display: none;
 }
+
+/* ===================================
+   EKG Visualizer
+   =================================== */
+
+#ekg-container {
+  position: fixed;
+  top: var(--spacing-md);
+  left: var(--spacing-md);
+  width: 280px;
+  z-index: 9999;
+  /* allow clicks through to underlying 3-D scene, except on the header */
+  pointer-events: none;
+}
+
+#ekg-frame {
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative; /* needed for the resize-handle absolute anchor */
+}
+
+#ekg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px var(--spacing-md);
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  gap: var(--spacing-sm);
+  /* header is always interactive */
+  pointer-events: auto;
+  cursor: default;
+}
+
+#ekg-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+#ekg-rhythm-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Toggle button ─────────────────────────────────────────────────── */
+#ekg-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  pointer-events: auto;
+}
+
+#ekg-toggle:hover {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 1px rgba(231, 76, 60, 0.35);
+}
+
+/* Chevron rotates 180° when collapsed */
+#ekg-toggle svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+#ekg-frame.ekg-collapsed #ekg-toggle svg {
+  transform: rotate(180deg);
+}
+
+/* ── Collapsed state ───────────────────────────────────────────────── */
+#ekg-canvas-wrap {
+  height: 90px;
+  position: relative;
+  overflow: hidden;
+  /* smooth open/close */
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+  opacity: 1;
+}
+
+#ekg-frame.ekg-collapsed #ekg-canvas-wrap {
+  height: 0;
+  opacity: 0;
+}
+
+/* When frame is collapsed hide the header border-bottom */
+#ekg-frame.ekg-collapsed #ekg-header {
+  border-bottom-color: transparent;
+}
+
+/* ── Resize handle ─────────────────────────────────────────────────── */
+#ekg-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  pointer-events: auto;
+  z-index: 10;
+  /* dot-grid icon via radial-gradients */
+  background-image:
+    radial-gradient(circle, rgba(231, 76, 60, 0.7) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(231, 76, 60, 0.7) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(231, 76, 60, 0.7) 1.5px, transparent 1.5px);
+  background-size: 6px 6px;
+  background-position: 10px 10px, 4px 10px, 10px 4px;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 0 0 var(--radius) 0;
+}
+
+/* Show handle on hover of the whole frame */
+#ekg-frame:hover #ekg-resize-handle {
+  opacity: 1;
+}
+
+/* Hide when collapsed */
+#ekg-frame.ekg-collapsed #ekg-resize-handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#ekgCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Light mode – keep canvas readable */
+body.light-mode #ekg-frame {
+  background: var(--glass-bg);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  #ekg-container {
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    width: 200px;
+  }
+
+  #ekg-canvas-wrap {
+    height: 68px;
+  }
+}
+
+@media (max-height: 600px) {
+  #ekg-container {
+    top: 4px;
+    left: 4px;
+    width: 180px;
+  }
+
+  #ekg-canvas-wrap {
+    height: 56px;
+  }
+}
+
