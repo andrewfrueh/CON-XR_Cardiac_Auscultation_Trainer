@@ -42,8 +42,6 @@ let currentView: ViewMode = "mannequin";
 let mannequinGroup: THREE.Group;
 
 
-
-
 // Optional camera presets (tweak numbers after you see it)
 const heartCameraPos = new THREE.Vector3(0, 0, 6);
 const mannequinCameraPos = new THREE.Vector3(0, 0, 8);
