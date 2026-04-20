@@ -1,160 +1,207 @@
-# 3D Heart Visualization - TypeScript Edition
+# CON-XR Cardiac Auscultation Trainer
 
-Interactive 3D heart model built with Three.js and TypeScript, featuring a complete Docker-based development environment.
+An interactive, web-based cardiac auscultation training tool built with **Three.js** and **TypeScript**. Students can explore a 3D chest and heart model, select anatomical auscultation points, listen to clinically accurate heart sounds, and observe real-time EKG waveforms — all in the browser.
 
-## TODO
-- Update tsconfig ES target from 2020 to 2022
-- Unpack assets to the root of public
+> **Live Demo →** Deployed automatically to GitHub Pages on every push to `main`.
+
+---
 
 ## Features
 
-- **3D Heart Model**: Realistic heart shape with anatomical details including chambers and veins
-- **Interactive Controls**: Pan, rotate, and zoom around the heart using your mouse
-- **Beautiful Materials**: Realistic textures with transparency and lighting effects
-- **Atmospheric Effects**: Floating particles and dynamic lighting for an immersive experience
-- **Responsive Design**: Works on all screen sizes and devices
-- **Animation**: Gentle rotation and pulsing effects that can be toggled on/off
-- **TypeScript**: Full type safety and modern development experience
-- **Docker Development**: Complete containerized development environment
+### 🫀 3D Anatomical Models
+- **Chest View** — FBX mannequin with four interactive auscultation points overlaid at their anatomical positions.
+- **Heart View** — Detailed 3D heart model with real-time contraction animation driven by the selected rhythm.
+- Toggle between views at any time; the audio engine and EKG continue uninterrupted.
 
-## Quick Start with Docker
+### 🩺 Auscultation Points
+Four standard cardiac exam locations, each with location-specific sound modifications:
 
-1. **Start the development environment**:
-   ```bash
-   docker compose up -d
-   ```
+| Point | Landmark |
+|-------|----------|
+| **Aortic** | 2nd ICS, Right Sternal Border |
+| **Pulmonic** | 2nd ICS, Left Sternal Border |
+| **Tricuspid** | 4th ICS, Left Sternal Border |
+| **Mitral (Apex)** | 5th ICS, Midclavicular Line |
 
-2. **Enter the development container**:
-   ```bash
-   docker compose exec dev sh
-   ```
+### 🎵 Heart Rhythms
+Selectable rhythms with a searchable dropdown
 
-3. **Inside the container, install dependencies, build and run**:
-   ```bash
-   yarn install 
-   yarn build
-   yarn dev
-   ```
+Sounds are sourced from the [University of Michigan Heart Sound & Murmur Library](https://open.umich.edu/find/open-educational-resources/medical/heart-sound-murmur-library) (Mitral location) and procedurally generated for the remaining locations with clinically informed rules (see [`documentation/HeartRhythms.txt`](documentation/HeartRhythms.txt)).
 
-4. **Open your browser** and navigate to `http://localhost:3000`
+### 📈 EKG Visualizer
+- Canvas-based real-time EKG waveform synchronized to the active rhythm and BPM.
+- Collapsible and resizable panel with drag handle.
 
-5. **Shutdown**:
-   Ctrl+C to stop container
-   Exit container:
-   ```bash
-   exit
-   ```
-   ```bash
-   docker compose down
-   ```
+### 🎛️ Controls
+- **BPM Slider** — Adjustable from 30 to 180 BPM.
+- **Volume Slider** — Master heart sound volume.
+- **Play / Pause** — Start or stop the cardiac cycle.
+- **Reset View** — Return the 3D camera to its default position.
+- **Dark / Light Mode** — Toggle background theme.
 
-## Development Scripts
+---
 
-- `yarn dev` - Start development server with watch mode
-- `yarn build` - Build production version
-- `yarn build:watch` - Watch mode for TypeScript compilation
-- `yarn serve` - Serve the built files
-- `yarn start` - Build and serve (production mode)
-- `yarn type-check` - Run TypeScript type checking
-- `yarn clean` - Clean build directory
+## Quick Start
 
-## Controls
+### Prerequisites
+- [Node.js](https://nodejs.org/) 18+ and `npm` (or `yarn`)
 
-- **Left Click + Drag**: Rotate the heart around its center
-- **Right Click + Drag**: Pan the view
-- **Scroll Wheel**: Zoom in and out
-- **Reset View Button**: Return to the default camera position
-- **Toggle Animation Button**: Start/stop the heart's gentle rotation and pulsing
+### Install & Run
+
+```bash
+# Clone the repository
+git clone https://github.com/andrewfrueh/CON-XR_Cardiac_Auscultation_Trainer.git
+cd CON-XR_Cardiac_Auscultation_Trainer
+
+# Install dependencies
+npm install        # or: yarn install
+
+# Start the dev server (opens on http://localhost:5173)
+npm run dev        # or: yarn dev
+```
+
+### Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start Vite dev server with HMR |
+| `npm run build` | Type-check and build for production (outputs to `docs/`) |
+| `npm run preview` | Preview the production build locally |
+| `npm test` | Run the Jest test suite |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Generate a test coverage report |
+
+---
 
 ## Project Structure
 
 ```
-heartTest/
-├── docker-compose.yml      # Docker Compose configuration
-├── Dockerfile             # Docker image definition
-├── package.json           # Dependencies and scripts
-├── tsconfig.json          # TypeScript configuration
-├── index.html             # Main HTML file with UI and styling
-├── src/
-│   ├── heart.ts           # Main TypeScript source code
+CON-XR_Cardiac_Auscultation_Trainer/
+├── index.html                    # App shell — layout, controls, EKG panel
+├── vite.config.js                # Vite config (base path for GitHub Pages)
+├── tsconfig.json                 # TypeScript configuration
+├── package.json                  # Dependencies & scripts
+├── jest.config.ts                # Jest test configuration
+│
+├── src/                          # Application source (TypeScript)
+│   ├── main.ts                   # Entry point — bootstraps all systems
+│   ├── heart/
+│   │   ├── heart.ts              # Three.js scene, models, camera, lighting
+│   │   ├── HeartController.ts    # Singleton orchestrator (animation + audio + timing)
+│   │   ├── RhythmOptions.ts      # Rhythm enum / option list
+│   │   └── heartRhythms/
+│   │       ├── Rhythm.ts         # Rhythm type definitions & defaults
+│   │       └── config/
+│   │           ├── rhythm-templates.ts    # Sound & animation keyframe data
+│   │           ├── rhythm-factory.ts      # Builds rhythm objects from templates
+│   │           ├── animation-keyframes.ts # Shared animation keyframe helpers
+│   │           ├── location-modifiers.ts  # Per-auscultation-point sound rules
+│   │           └── index.ts               # Config barrel export
+│   ├── AudioEngine.ts            # Web Audio API playback & envelope control
+│   ├── AnimationController.ts    # Blendshape interpolation for heart mesh
+│   ├── TimingController.ts       # Global BPM clock & cycle tracking
+│   ├── RhythmController.ts       # Rhythm switching & auscultation location
+│   ├── EKGVisualizer.ts          # Canvas-based EKG waveform renderer
+│   ├── audio/
+│   │   ├── SoundManager.ts       # Sound asset loading & caching
+│   │   └── interfaces.ts         # ISoundEmitter interface
+│   ├── utils/
+│   │   ├── controls-manager.ts   # UI control wiring
+│   │   └── curves.ts             # Motion / easing curve functions
+│   └── __tests__/                # Unit tests (15 test files)
+│
+├── public/
 │   └── assets/
-│       └── realistic_human_heart.glb  # 3D heart model
-└── dist/                  # Built files (generated)
-    ├── heart.js           # Compiled JavaScript
-    ├── heart.js.map       # Source maps
-    ├── index.html         # Copied HTML
-    └── realistic_human_heart.glb  # Copied assets
+│       ├── heart.fbx             # 3D heart model
+│       ├── chest.fbx             # 3D chest mannequin model
+│       ├── chest.png             # Chest texture
+│       ├── favicon.png           # App favicon
+│       ├── rhythm-dropdown.js    # Custom searchable dropdown widget
+│       ├── styles/
+│       │   ├── main.css          # Global styles
+│       │   └── controls.css      # Control panel & EKG styles
+│       └── sounds/               # Heart sound MP3 assets
+│
+├── sounds/                       # Extended sound library (89 MP3s)
+├── documentation/
+│   ├── HeartRhythms.txt          # Rhythm catalog & procedural generation rules
+│   └── DEVELOPER_HANDOFF.md      # Full developer handoff documentation
+├── docs/                         # Production build output (GitHub Pages)
+└── .github/workflows/
+    └── pages2.yml                # CI/CD — auto-deploy to GitHub Pages
 ```
 
-## Technical Details
+---
 
-- **TypeScript 5.3+**: Full type safety with strict configuration
-- **Three.js 0.158**: 3D graphics library for WebGL rendering
-- **Node.js 18**: Modern JavaScript runtime
-- **Yarn**: Fast, reliable package manager
-- **Docker**: Containerized development environment
-- **Hot Reload**: Automatic recompilation and serving during development
+## Architecture
 
-## Development Environment
+The application follows a **singleton orchestrator** pattern:
 
-The project uses Docker for a consistent development environment:
+```
+HeartController (orchestrator)
+├── TimingController    — Global BPM clock, cycle progress
+├── AnimationController — Blendshape targets, mesh interpolation
+├── RhythmController    — Active rhythm, auscultation location
+└── AudioEngine         — Web Audio playback, envelopes, volume
+```
 
-- **Base Image**: Node.js 18 Alpine
-- **Package Manager**: Yarn with lockfile support
-- **Build System**: TypeScript compiler with watch mode
-- **Dev Server**: http-server with CORS support
-- **Port Mapping**: 3000 (main app)
+Each controller is a singleton accessed via `getInstance()`. The `HeartController` drives the per-frame update loop: it reads cycle progress from `TimingController`, processes animation and sound keyframes from the current `Rhythm`, and delegates to the appropriate controller.
 
-## Browser Compatibility
+The **EKG Visualizer** runs independently on its own canvas, synchronized to the same `TimingController` clock.
 
-- Chrome 60+
-- Firefox 55+
-- Safari 12+
-- Edge 79+
+---
 
-## Customization
+## Tech Stack
 
-You can easily modify the heart appearance by editing the `src/heart.ts` file:
+| Layer | Technology |
+|-------|------------|
+| **Runtime** | TypeScript 5.3+ targeting ES2020 |
+| **3D Rendering** | Three.js 0.158 (via importmap CDN) |
+| **Bundler** | Vite 7 |
+| **Testing** | Jest 30 + ts-jest + jsdom |
+| **Deployment** | GitHub Actions → GitHub Pages |
+| **Audio** | Web Audio API |
 
-- **Colors**: Change the `color` property in materials
-- **Size**: Adjust the `scale` values
-- **Animation Speed**: Modify the rotation and pulse values in the `animate()` function
-- **Lighting**: Adjust light positions and intensities in `addLighting()`
+---
 
-## TypeScript Benefits
+## Deployment
 
-- **Type Safety**: Catch errors at compile time
-- **IntelliSense**: Better IDE support with autocomplete
-- **Refactoring**: Safe renaming and restructuring
-- **Documentation**: Self-documenting code with type annotations
-- **Modern Features**: Latest ECMAScript features with transpilation
+The project auto-deploys to **GitHub Pages** via the `.github/workflows/pages2.yml` workflow on every push to `main`.
 
-## Troubleshooting
+The production build outputs to the `docs/` directory with a base path of `/CON-XR_Cardiac_Auscultation_Trainer/`.
 
-### Container Issues
-- Make sure Docker is running
-- Try `docker compose down && docker compose up -d` to restart
-- Check logs with `docker compose logs dev`
+To build manually:
 
-### Build Issues
-- Clear build cache: `yarn clean && yarn build`
-- Check TypeScript errors: `yarn type-check`
-- Ensure all dependencies are installed: `yarn install`
+```bash
+npm run build
+```
 
-### Loading Issues
-- Verify the GLB model file is in `src/assets/`
-- Check browser console for errors
-- Try the fallback heart if model fails to load
+---
 
-## Dependencies
+## Testing
 
-### Runtime Dependencies
-- **three**: 3D graphics library
+The project includes 15 unit test files covering all major controllers and utilities:
 
-### Development Dependencies
-- **@types/three**: TypeScript definitions for Three.js
-- **typescript**: TypeScript compiler
-- **concurrently**: Run multiple commands simultaneously
-- **http-server**: Static file server with CORS support
+```bash
+# Run all tests
+npm test
 
-No additional build tools or bundlers required - the setup uses native ES modules with TypeScript compilation!
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
+```
+
+---
+
+## Sound Library
+
+Heart sounds are sourced from the **University of Michigan Heart Sound & Murmur Library** (open educational resource). The `sounds/` directory contains 89 MP3 files spanning:
+
+- Normal heart sounds (S1, S2 variants)
+- Gallops (S3, S4, summation)
+- Murmurs (aortic stenosis/regurgitation, mitral stenosis/regurgitation, etc.)
+- Clicks (mid-systolic, ejection)
+- Congenital defects (ASD, VSD, PDA, Tetralogy of Fallot, etc.)
+- Lung sounds (wheezes, crackles, rales, stridor, pleural rubs)
