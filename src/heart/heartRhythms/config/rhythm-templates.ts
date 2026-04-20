@@ -90,28 +90,6 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
     ],
   },
 
-  EarlySystolicMurmur: {
-    name: "EarlySystolicMurmur",
-    displayName: "Early Systolic Murmur",
-    description: "Acute mitral regurgitation",
-    sounds: [
-      { time: 0.32, soundKey: "S1" },
-      {
-        time: 0.34,
-        soundKey: "SystolicMurmur",
-        envelope: {
-          attack: 0.0, // Instant onset (decrescendo shape)
-          sustain: 0.1,
-          decay: 0.2,
-          peakGain: 0.3,
-          hpFreq: 80,
-          lpFreq: 4000,
-        },
-      },
-      { time: 0.62, soundKey: "S2" },
-    ],
-  },
-
   MidSystolicMurmur: {
     name: "MidSystolicMurmur",
     displayName: "Mid Systolic Murmur",
@@ -128,28 +106,6 @@ export const rhythmTemplates: Record<string, RhythmTemplate> = {
           peakGain: 0.9,
           hpFreq: 120,
           lpFreq: 3500,
-        },
-      },
-      { time: 0.62, soundKey: "S2" },
-    ],
-  },
-
-  LateSystolicMurmur: {
-    name: "LateSystolicMurmur",
-    displayName: "Late Systolic Murmur",
-    description: "Mitral regurgitation due to MVP",
-    sounds: [
-      { time: 0.32, soundKey: "S1" },
-      {
-        time: 0.53,
-        soundKey: "SystolicMurmur",
-        envelope: {
-          attack: 0.25, // Crescendo shape (slow fade-in, sharp cutoff)
-          sustain: 0.15,
-          decay: 0.05,
-          peakGain: 0.85,
-          hpFreq: 200,
-          lpFreq: 3000,
         },
       },
       { time: 0.62, soundKey: "S2" },
