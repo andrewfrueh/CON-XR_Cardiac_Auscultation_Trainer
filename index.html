@@ -183,12 +183,28 @@
     <script src="/assets/rhythm-dropdown.js" defer></script>
     <script>
       /* ── EKG collapse toggle ───────────────────────────────────────── */
+      var _ekgSavedHeight = null; // stash user-resized height across fold cycles
       function toggleEKG() {
-        const frame = document.getElementById('ekg-frame');
-        const btn   = document.getElementById('ekg-toggle');
-        const collapsed = frame.classList.toggle('ekg-collapsed');
-        btn.title = collapsed ? 'Expand EKG' : 'Collapse EKG';
-        btn.setAttribute('aria-label', collapsed ? 'Expand EKG' : 'Collapse EKG');
+        const frame      = document.getElementById('ekg-frame');
+        const btn        = document.getElementById('ekg-toggle');
+        const canvasWrap = document.getElementById('ekg-canvas-wrap');
+        const collapsing = !frame.classList.contains('ekg-collapsed');
+
+        if (collapsing) {
+          // Save any inline height set by the resize handle, then clear it
+          // so the CSS rule  .ekg-collapsed #ekg-canvas-wrap { height:0 }  wins.
+          _ekgSavedHeight = canvasWrap.style.height || null;
+          canvasWrap.style.height = '';
+        } else {
+          // Expanding – restore the custom height if user previously resized
+          if (_ekgSavedHeight) {
+            canvasWrap.style.height = _ekgSavedHeight;
+          }
+        }
+
+        frame.classList.toggle('ekg-collapsed');
+        btn.title = collapsing ? 'Expand EKG' : 'Collapse EKG';
+        btn.setAttribute('aria-label', collapsing ? 'Expand EKG' : 'Collapse EKG');
       }
 
       /* ── EKG resize handle ─────────────────────────────────────────── */
