@@ -77,20 +77,6 @@ The current list of heart sounds should be condensed to improve usability during
 - All other heart sounds should be placed under a **“Show More”** or expandable section
 - Goal: reduce cognitive overload and make the interface more intuitive for nurses during timed or realistic training scenarios
 
----
-
-### 2. Expand BPM Range
-- Increase the maximum BPM limit to **220**
-- This is necessary to accurately represent tachycardic rhythms (e.g., SVT, ventricular tachycardia)
-
----
-
-### 3. Simplify Murmur Classification
-- Combine:
-  - Early systolic murmur
-  - Late systolic murmur  
-→ into a single **“Systolic Murmur”** category
-
 ### 4. Integrate SME feedback
 
 ## SME Feedback Summary
@@ -158,7 +144,3 @@ The current list of heart sounds should be condensed to improve usability during
 ---
 
 > Feedback was translated into backlog items to guide future development and align with first-year nursing education needs.
-
-#### Rationale:
-- Reduces unnecessary complexity for learners
-- Aligns better with practical clinical identification at this stage of training
