@@ -76,3 +76,89 @@ The current list of heart sounds should be condensed to improve usability during
 #### Additional requirement:
 - All other heart sounds should be placed under a **“Show More”** or expandable section
 - Goal: reduce cognitive overload and make the interface more intuitive for nurses during timed or realistic training scenarios
+
+---
+
+### 2. Expand BPM Range
+- Increase the maximum BPM limit to **220**
+- This is necessary to accurately represent tachycardic rhythms (e.g., SVT, ventricular tachycardia)
+
+---
+
+### 3. Simplify Murmur Classification
+- Combine:
+  - Early systolic murmur
+  - Late systolic murmur  
+→ into a single **“Systolic Murmur”** category
+
+### 4. Integrate SME feedback
+
+## SME Feedback Summary
+
+### Target Users & Context
+- Designed for **first-year nursing students**
+- Focus on **foundational cardiac assessment**
+  - Vital signs
+  - Common abnormal heart sounds
+- Used to help students **practice pulse counting and build confidence**
+
+---
+
+### Audio & Sound Improvements
+- S3 and S4 heart sounds are **too quiet for classroom use**
+  - Increase volume to match murmur levels
+- Pulmonic auscultation sound:
+  - Currently too muffled
+  - Should be **clearer and slightly higher pitched**
+  - S2 should be **more prominent than S1**
+
+---
+
+### Rhythm & Feature Requests
+- Add **Atrial Fibrillation (AFib)** option
+  - Enables practice of **irregular pulse detection**
+- *(Optional)* Add **visual atrial quivering** during AFib
+
+---
+
+### Clinical Accuracy Fixes
+- Auscultation landmarks are **positioned too high**
+- Correct placements:
+  - **Aortic:** 2nd intercostal space, right sternal border  
+  - **Pulmonic:** 2nd intercostal space, left sternal border  
+  - **Tricuspid:** 4th intercostal space, left sternal border  
+  - **Mitral:** 5th intercostal space, midclavicular line  
+
+---
+
+### System Issues / Bugs
+- **EKG display is glitchy**
+  - Shows incorrect/random waveforms (e.g., unexpected p-waves/PVCs)
+- **Exercise mode is not functioning correctly**
+  - Does not increase heart rate as expected
+
+---
+
+### Feature Priority / Scope Notes
+- EKG feature is **not critical for first-year students**
+  - May be simplified or removed unless required
+- Advanced heart sounds are **lower priority**
+  - Focus on **common, clinically relevant rhythms**
+
+---
+
+### Overall Takeaways
+- Tool is **valuable and improves student confidence**
+- Priorities moving forward:
+  - Usability
+  - Audio clarity
+  - Clinical accuracy
+  - Core rhythm training
+
+---
+
+> Feedback was translated into backlog items to guide future development and align with first-year nursing education needs.
+
+#### Rationale:
+- Reduces unnecessary complexity for learners
+- Aligns better with practical clinical identification at this stage of training
